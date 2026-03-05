@@ -50,7 +50,7 @@ const StatsCards = () => {
             {cards.map((card, i) => (
                 <div
                     key={i}
-                    className="bg-[#111113] border border-[#1f1f23] p-5 sm:p-6 rounded-2xl gh-card-hover animate-fadeIn"
+                    className="bg-[#111113] border border-[#1f1f23] p-5 sm:p-6 rounded-2xl gh-card-hover gh-card-shine animate-fadeIn"
                     style={{ animationDelay: `${i * 100}ms` }}
                 >
                     <p className="text-gray-500 text-xs font-bold uppercase mb-3 sm:mb-4 flex items-center gap-2">

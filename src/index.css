@@ -418,6 +418,33 @@ button:not(:disabled):active {
   opacity: 1;
 }
 
+/* Shine flash effect for mini cards */
+.gh-card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.gh-card-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+  transform: skewX(-20deg);
+  transition: all 0.8s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gh-card-shine:hover::before {
+  left: 200%;
+}
+
 /* Recommended row glow */
 .gh-recommended-row {
   position: relative;
