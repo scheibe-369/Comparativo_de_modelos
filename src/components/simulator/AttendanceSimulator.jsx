@@ -270,11 +270,10 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                     </div>
 
                     {/* Monthly projection */}
-                    <div className="bg-[#15152a]/40 border border-[#7B61FF]/20 rounded-2xl p-5 gh-card-hover gh-border-glow">
+                    <div className="bg-[#111113] border border-[#1f1f23] p-5 sm:p-6 rounded-2xl gh-card-hover gh-card-shine animate-fadeIn">
                         <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">Projeção Mensal (100 conv/dia)</p>
-                        <div className="grid grid-cols-2 gap-3">
-                            {/* Pegamos os 4 primeiros modelos (mais baratos/evidentes) para exibir como destaque */}
-                            {models.slice(0, 4).map((model) => {
+                        <div className="grid grid-cols-2 gap-3 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
+                            {models.map((model) => {
                                 const costPerConv = calculateModelCost(model.costInput, model.costOutput);
                                 const monthly = costPerConv * 100 * 30;
                                 return (
