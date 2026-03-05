@@ -43,7 +43,7 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                         <tr className="bg-[#0d0d0f] text-gray-500 text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em]">
                             <th className="p-4 sm:p-6 font-bold">Modelo / IA</th>
                             <th className="p-4 sm:p-6 font-bold">Provedor</th>
-                            <th className="p-4 sm:p-6 font-bold text-right">Preço (1M)</th>
+                            <th className="p-4 sm:p-6 font-bold text-right">In / Out (1M)</th>
                             <th className="p-4 sm:p-6 font-bold text-right text-[#7B61FF]">Custo/Conv (70k)</th>
                             <th className="p-4 sm:p-6 font-bold text-right">Impacto (10k Conv)</th>
                         </tr>
@@ -76,18 +76,19 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                                     </div>
                                 </td>
                                 <td className="p-4 sm:p-6 text-gray-400 text-xs sm:text-sm font-medium">{model.provider}</td>
-                                <td className="p-4 sm:p-6 text-right font-mono text-xs text-gray-500">
-                                    {formatUSD(model.costPer1M)}
+                                <td className="p-4 sm:p-6 text-right font-mono text-[10px] sm:text-xs text-gray-500 flex flex-col items-end gap-1">
+                                    <span>{formatUSD(model.costInput)} <span className="text-[8px] uppercase">in</span></span>
+                                    <span>{formatUSD(model.costOutput)} <span className="text-[8px] uppercase">out</span></span>
                                 </td>
                                 <td className="p-4 sm:p-6 text-right font-mono text-xs sm:text-sm font-bold text-white">
                                     {formatCurrency(
-                                        calculateCost(model.costPer1M, TOKENS_PER_CONVERSATION, currency, exchangeRate),
+                                        calculateCost(model.costInput, model.costOutput, TOKENS_PER_CONVERSATION, currency, exchangeRate),
                                         currency
                                     )}
                                 </td>
                                 <td className="p-4 sm:p-6 text-right font-mono text-xs sm:text-sm text-gray-400">
                                     {formatCurrency(
-                                        calculateCost(model.costPer1M, TOKENS_PER_CONVERSATION * 10000, currency, exchangeRate),
+                                        calculateCost(model.costInput, model.costOutput, TOKENS_PER_CONVERSATION * 10000, currency, exchangeRate),
                                         currency,
                                         true
                                     )}

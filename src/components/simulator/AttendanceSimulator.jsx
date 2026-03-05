@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { MessageSquare, Calendar, Search, Package, Info, Plus } from 'lucide-react';
 import { TOKENS_PER_CONVERSATION } from '../../data/models';
 import { formatCurrency } from '../../utils/formatters';
+import { calculateCost } from '../../utils/calculations';
 
 const TOKENS_PER_EXECUTION = 4200;
 const TOKENS_PER_TOOL = 8000;
@@ -71,10 +72,9 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
         };
     }, [questions, activeTools]);
 
-    const calculateModelCost = (costPer1M) => {
-        const costPerToken = costPer1M / 1_000_000;
-        const costUSD = tokenBreakdown.total * costPerToken;
-        return currency === 'BRL' ? costUSD * exchangeRate : costUSD;
+    const calculateModelCost = (costInput, costOutput) => {
+        // Usa a nova lógica rateada em 80/20 do calculateCost com o total de tokens do breakDown
+        return calculateCost(costInput, costOutput, tokenBreakdown.total, currency, exchangeRate);
     };
 
     return (
@@ -230,10 +230,11 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                             <Info size={16} className="text-[#7B61FF]" />
                             <span className="text-sm font-bold text-white">Custo por Conversa</span>
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
                             {models.map((model) => {
-                                const cost = calculateModelCost(model.costPer1M);
-                                const maxCost = calculateModelCost(models[models.length - 1].costPer1M);
+                                const cost = calculateModelCost(model.costInput, model.costOutput);
+                                const maxCostModel = models[models.length - 1]; // assumindo os ordenados
+                                const maxCost = maxCostModel ? calculateModelCost(maxCostModel.costInput, maxCostModel.costOutput) : 1;
                                 const barWidth = maxCost > 0 ? (cost / maxCost) * 100 : 0;
 
                                 return (
@@ -272,13 +273,14 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                     <div className="bg-[#15152a]/40 border border-[#7B61FF]/20 rounded-2xl p-5 gh-card-hover gh-border-glow">
                         <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">Projeção Mensal (100 conv/dia)</p>
                         <div className="grid grid-cols-2 gap-3">
-                            {models.filter(m => m.badge === 'recommended' || m.costPer1M <= 0.30).map((model) => {
-                                const costPerConv = calculateModelCost(model.costPer1M);
+                            {/* Pegamos os 4 primeiros modelos (mais baratos/evidentes) para exibir como destaque */}
+                            {models.slice(0, 4).map((model) => {
+                                const costPerConv = calculateModelCost(model.costInput, model.costOutput);
                                 const monthly = costPerConv * 100 * 30;
                                 return (
                                     <div key={model.id} className="text-center">
-                                        <p className="text-[10px] text-gray-400 font-medium">{model.name}</p>
-                                        <p className="text-lg font-bold font-mono text-white">
+                                        <p className="text-[10px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis">{model.name}</p>
+                                        <p className="text-[16px] sm:text-lg font-bold font-mono text-white">
                                             {formatCurrency(monthly, currency, true)}
                                         </p>
                                         <p className="text-[9px] text-gray-600">/mês</p>

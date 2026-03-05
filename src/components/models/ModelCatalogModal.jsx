@@ -81,8 +81,8 @@ const ModelCatalogModal = ({
                                     <div
                                         key={model.id}
                                         className={`flex items-center justify-between p-4 rounded-xl border transition-all ${isSelected
-                                                ? 'bg-[#7B61FF]/5 border-[#7B61FF]/30'
-                                                : 'bg-[#15152a]/40 border-[#1a1a1c] hover:border-[#1f1f23]'
+                                            ? 'bg-[#7B61FF]/5 border-[#7B61FF]/30'
+                                            : 'bg-[#15152a]/40 border-[#1a1a1c] hover:border-[#1f1f23]'
                                             }`}
                                     >
                                         <div className="flex-1">
@@ -97,7 +97,7 @@ const ModelCatalogModal = ({
                                             <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs font-semibold text-gray-400">
                                                 <span>{model.provider}</span>
                                                 <span className="w-1 h-1 rounded-full bg-gray-700"></span>
-                                                <span>${model.cost_per_1m.toFixed(2)}/1M tokens</span>
+                                                <span>In: ${model.costInput?.toFixed(2)} - Out: ${model.costOutput?.toFixed(2)}</span>
                                                 {model.context_window && (
                                                     <>
                                                         <span className="w-1 h-1 rounded-full bg-gray-700"></span>
@@ -117,10 +117,10 @@ const ModelCatalogModal = ({
                                                 onClick={() => handleToggle(model)}
                                                 disabled={isProcessing}
                                                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isProcessing
-                                                        ? 'bg-[#222] text-gray-500 cursor-not-allowed'
-                                                        : isSelected
-                                                            ? 'bg-emerald-500/10 text-emerald-500 hover:bg-red-500/10 hover:text-red-500' // Hover para remover
-                                                            : 'bg-[#7B61FF]/10 text-[#7B61FF] hover:bg-[#7B61FF] hover:text-white shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.4)]'
+                                                    ? 'bg-[#222] text-gray-500 cursor-not-allowed'
+                                                    : isSelected
+                                                        ? 'bg-emerald-500/10 text-emerald-500 hover:bg-red-500/10 hover:text-red-500' // Hover para remover
+                                                        : 'bg-[#7B61FF]/10 text-[#7B61FF] hover:bg-[#7B61FF] hover:text-white shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.4)]'
                                                     }`}
                                                 title={isSelected ? "Remover do Dashboard" : "Adicionar ao Dashboard"}
                                             >

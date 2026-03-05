@@ -52,7 +52,8 @@ const CostCalculator = ({ currency, exchangeRate, models }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {models.map((model, i) => {
                     const monthlyCost = calculateMonthlyCost(
-                        model.costPer1M,
+                        model.costInput,
+                        model.costOutput,
                         TOKENS_PER_CONVERSATION,
                         convsPerDay,
                         currency,
@@ -62,7 +63,7 @@ const CostCalculator = ({ currency, exchangeRate, models }) => {
                     return (
                         <div
                             key={model.id}
-                            className={`p-4 rounded-xl border transition-all gh-card-hover ${model.isBaseline
+                            className={`p-4 rounded-xl border transition-all gh-card-hover gh-card-shine ${model.isBaseline
                                 ? 'bg-[#15152a]/40 border-[#7B61FF]/30'
                                 : 'bg-[#0d0d0f] border-[#1a1a1c]'
                                 }`}

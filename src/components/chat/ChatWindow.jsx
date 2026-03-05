@@ -84,7 +84,8 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
 
     const currentModel = getModelById(selectedModel);
     const sessionCost = calculateCost(
-        currentModel?.costPer1M || 0,
+        currentModel?.costInput || 0,
+        currentModel?.costOutput || 0,
         messages.length * 500,
         currency,
         exchangeRate
