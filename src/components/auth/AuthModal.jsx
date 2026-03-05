@@ -114,7 +114,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                 <Loader2 size={16} className="animate-spin" />
                             ) : (
                                 <>
-                                    {isLogin ? 'Entrar' : 'Cadastrar'}
+                                    {isLogin ? 'Login' : 'Cadastrar'}
                                     <ArrowRight size={16} />
                                 </>
                             )}

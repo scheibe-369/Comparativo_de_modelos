@@ -78,7 +78,7 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                             className="bg-[#7B61FF]/10 text-[#7B61FF] border border-[#7B61FF]/30 hover:bg-[#7B61FF]/20 px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 hover:shadow-[0_0_15px_rgba(123,97,255,0.2)]"
                         >
                             <LogIn size={14} />
-                            Entrar
+                            Login
                         </button>
                     )}
 
@@ -136,7 +136,7 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                                 className="w-full mb-2 bg-[#7B61FF]/10 text-[#7B61FF] border border-[#7B61FF]/30 px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
                             >
                                 <LogIn size={16} />
-                                Fazer Login
+                                Login
                             </button>
                         )}
 
