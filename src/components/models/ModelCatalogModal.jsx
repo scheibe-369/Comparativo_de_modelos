@@ -1,0 +1,151 @@
+import React, { useState } from 'react';
+import { X, Plus, Check, Loader2, Sparkles } from 'lucide-react';
+
+const ModelCatalogModal = ({
+    isOpen,
+    onClose,
+    catalogModels,
+    userSelectedModelIds,
+    onAddModel,
+    onRemoveModel,
+    loading
+}) => {
+    const [processingId, setProcessingId] = useState(null);
+
+    if (!isOpen) return null;
+
+    const handleToggle = async (model) => {
+        const isSelected = userSelectedModelIds.includes(model.id);
+        setProcessingId(model.id);
+        try {
+            if (isSelected) {
+                await onRemoveModel(model.id);
+            } else {
+                await onAddModel(model.id);
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setProcessingId(null);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            {/* Backdrop */}
+            <div
+                className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                onClick={onClose}
+            />
+
+            {/* Modal Content */}
+            <div className="relative w-full max-w-2xl bg-[#111113] border border-[#1f1f23] rounded-2xl sm:rounded-3xl shadow-[0_0_100px_rgba(123,97,255,0.15)] overflow-hidden animate-slideUp">
+
+                {/* Purple gradient top bar */}
+                <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#7B61FF] to-transparent opacity-50" />
+
+                <div className="p-6 sm:p-8">
+                    <div className="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                                <Sparkles className="text-[#7B61FF]" size={24} />
+                                Catálogo de Modelos
+                            </h3>
+                            <p className="text-sm text-gray-400 mt-1">
+                                Selecione modelos adicionais para comparar no seu dashboard.
+                            </p>
+                        </div>
+                        <button
+                            onClick={onClose}
+                            className="text-gray-500 hover:text-white transition-colors bg-[#1a1a1c] p-2 rounded-full hover:bg-[#222]"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                        {loading && catalogModels.length === 0 ? (
+                            <div className="py-12 flex justify-center items-center">
+                                <Loader2 className="animate-spin text-[#7B61FF]" size={32} />
+                            </div>
+                        ) : catalogModels.length === 0 ? (
+                            <div className="py-8 text-center text-gray-500 text-sm">
+                                Nenhum modelo adicional disponível no momento no catálogo.
+                            </div>
+                        ) : (
+                            catalogModels.map((model) => {
+                                const isSelected = userSelectedModelIds.includes(model.id);
+                                const isProcessing = processingId === model.id;
+
+                                return (
+                                    <div
+                                        key={model.id}
+                                        className={`flex items-center justify-between p-4 rounded-xl border transition-all ${isSelected
+                                                ? 'bg-[#7B61FF]/5 border-[#7B61FF]/30'
+                                                : 'bg-[#15152a]/40 border-[#1a1a1c] hover:border-[#1f1f23]'
+                                            }`}
+                                    >
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <h4 className="text-sm sm:text-base font-bold text-white">{model.name}</h4>
+                                                {model.badge && (
+                                                    <span className="px-2 py-0.5 text-[10px] uppercase font-bold text-[#7B61FF] bg-[#7B61FF]/10 rounded-full border border-[#7B61FF]/20">
+                                                        {model.badge}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs font-semibold text-gray-400">
+                                                <span>{model.provider}</span>
+                                                <span className="w-1 h-1 rounded-full bg-gray-700"></span>
+                                                <span>${model.cost_per_1m.toFixed(2)}/1M tokens</span>
+                                                {model.context_window && (
+                                                    <>
+                                                        <span className="w-1 h-1 rounded-full bg-gray-700"></span>
+                                                        <span>{model.context_window} via</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                            {model.description && (
+                                                <p className="text-xs text-gray-500 mt-2 line-clamp-2 leading-relaxed">
+                                                    {model.description}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <div className="ml-4 pl-4 border-l border-[#222]">
+                                            <button
+                                                onClick={() => handleToggle(model)}
+                                                disabled={isProcessing}
+                                                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isProcessing
+                                                        ? 'bg-[#222] text-gray-500 cursor-not-allowed'
+                                                        : isSelected
+                                                            ? 'bg-emerald-500/10 text-emerald-500 hover:bg-red-500/10 hover:text-red-500' // Hover para remover
+                                                            : 'bg-[#7B61FF]/10 text-[#7B61FF] hover:bg-[#7B61FF] hover:text-white shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.4)]'
+                                                    }`}
+                                                title={isSelected ? "Remover do Dashboard" : "Adicionar ao Dashboard"}
+                                            >
+                                                {isProcessing ? (
+                                                    <Loader2 size={18} className="animate-spin" />
+                                                ) : isSelected ? (
+                                                    <span className="group-hover:hidden"><Check size={20} /></span>
+                                                ) : (
+                                                    <Plus size={20} />
+                                                )}
+                                                {/* Tooltip trick via group hover */}
+                                                {isSelected && !isProcessing && (
+                                                    <span className="hidden group-hover:block"><X size={20} /></span>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default ModelCatalogModal;
