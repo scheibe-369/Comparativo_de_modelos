@@ -14,8 +14,10 @@ import CostChart from './components/costs/CostChart';
 import CostCalculator from './components/costs/CostCalculator';
 import Tilt3DCard from './components/ui/Tilt3DCard';
 import BackgroundEffects from './components/ui/BackgroundEffects';
+import ShaderBackground from './components/ui/ShaderBackground';
 import ChatWindow from './components/chat/ChatWindow';
 import AttendanceSimulator from './components/simulator/AttendanceSimulator';
+
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('table');
@@ -37,7 +39,9 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#070708] text-gray-200 font-sans selection:bg-[#7B61FF]/30 relative">
+      <ShaderBackground />
       <BackgroundEffects />
+
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
