@@ -1,9 +1,12 @@
 import React from 'react';
-import { Calculator, TrendingDown, Cpu, ShieldCheck } from 'lucide-react';
+import { Calculator, Zap, Cpu, ShieldCheck } from 'lucide-react';
 import { getSortedModels } from '../../data/models';
 
 const StatsCards = () => {
-    const cheapest = getSortedModels()[0];
+    const allModels = getSortedModels();
+    const recommended = allModels.find(m => m.badge === 'recommended') || allModels[0];
+    const openSource = allModels.find(m => m.provider === 'Meta' || m.id.includes('llama')) || allModels[1];
+    const beginnerModel = allModels.find(m => m.name.includes('Mini')) || allModels[0];
 
     const cards = [
         {
@@ -12,36 +15,43 @@ const StatsCards = () => {
             label: 'Contexto Médio',
             value: '70k',
             sub: 'tokens',
+            detail: '*Média por conversa (Estimativa Growth Hub)',
+            detailColor: 'text-gray-600/80 italic font-normal',
             extra: (
                 <div className="mt-4 h-1 w-full bg-[#1a1a1c] rounded-full overflow-hidden">
-                    <div className="bg-[#7B61FF] h-full w-[70%] rounded-full" />
+                    <div className="bg-gradient-to-r from-[#7B61FF] to-[#9B8AFF] h-full w-[70%] rounded-full shadow-[0_0_10px_rgba(123,97,255,0.5)]" />
                 </div>
             ),
         },
         {
-            icon: TrendingDown,
-            iconColor: 'text-emerald-500',
-            label: 'Mais Eficiente',
-            value: cheapest.name,
-            detail: 'Custo Mínimo Viável',
-            detailColor: 'text-emerald-500',
+            icon: ShieldCheck,
+            iconColor: 'text-blue-400',
+            label: 'Mais Recomendável',
+            value: 'Gemini 3 Flash',
+            sub: (
+                <span className="text-xs font-semibold bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/20 ml-1">
+                    Preview
+                </span>
+            ),
+            detail: '*Baseado no melhor custo x performance global',
+            detailColor: 'text-gray-500/80 italic font-normal',
         },
         {
             icon: Cpu,
             iconColor: 'text-amber-500',
             label: 'Open-Source',
-            value: 'Llama 3.3 70B',
-            detail: 'High Quality · Free Tier',
-            detailColor: 'text-amber-500',
+            value: openSource.name,
+            detail: 'Privacidade total via auto-hospedagem e performance de GPT-4o com custo reduzido',
+            detailColor: 'text-amber-500/90 font-medium',
         },
         {
-            icon: ShieldCheck,
-            iconColor: 'text-[#7B61FF]',
-            label: 'Status Agente',
-            value: 'Otimizado',
-            valueColor: 'text-emerald-400',
-            detail: 'Growth Hub V2.0.0',
-            detailColor: 'text-gray-500',
+            icon: Zap,
+            iconColor: 'text-pink-400',
+            label: 'Modelo para Iniciantes',
+            value: beginnerModel.name,
+            valueColor: 'text-white',
+            detail: 'Fácil integração e o melhor custo de entrada do mercado',
+            detailColor: 'text-pink-400 font-medium',
         },
     ];
 
@@ -50,11 +60,11 @@ const StatsCards = () => {
             {cards.map((card, i) => (
                 <div
                     key={i}
-                    className="bg-[#111113] border border-[#1f1f23] p-5 sm:p-6 rounded-2xl gh-card-hover gh-card-shine animate-fadeIn"
+                    className="group bg-[#111113] border border-[#1f1f23] p-5 sm:p-6 rounded-2xl gh-card-hover gh-card-shine animate-fadeIn"
                     style={{ animationDelay: `${i * 100}ms` }}
                 >
-                    <p className="text-gray-500 text-xs font-bold uppercase mb-3 sm:mb-4 flex items-center gap-2">
-                        <card.icon size={14} className={card.iconColor} />
+                    <p className="text-gray-500 text-xs font-bold uppercase mb-3 sm:mb-4 flex items-center gap-2 group-hover:text-gray-300 transition-colors">
+                        <card.icon size={14} className={`${card.iconColor} group-hover:scale-110 transition-transform`} />
                         {card.label}
                     </p>
                     <h3 className={`text-lg sm:text-xl font-bold ${card.valueColor || 'text-white'}`}>
@@ -62,7 +72,7 @@ const StatsCards = () => {
                         {card.sub && <span className="text-sm font-normal text-gray-500 ml-1">{card.sub}</span>}
                     </h3>
                     {card.detail && (
-                        <p className={`text-[10px] ${card.detailColor} font-bold mt-2`}>{card.detail}</p>
+                        <p className={`text-xs ${card.detailColor} mt-2`}>{card.detail}</p>
                     )}
                     {card.extra}
                 </div>

@@ -453,10 +453,10 @@ button:not(:disabled):active {
   transform: translateY(-6px) scale(1.01);
   border-color: rgba(123, 97, 255, 0.4);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 0 50px rgba(123, 97, 255, 0.25),
-    0 0 20px rgba(123, 97, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 25px 70px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(123, 97, 255, 0.3),
+    0 0 30px rgba(123, 97, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .gh-card-hover:hover::after {

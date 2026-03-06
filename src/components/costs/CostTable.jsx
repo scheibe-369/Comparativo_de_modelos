@@ -22,7 +22,7 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                     <button
                         onClick={onOpenCatalog}
-                        className="bg-[#7B61FF]/10 text-[#7B61FF] border border-[#7B61FF]/30 hover:bg-[#7B61FF] hover:text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.3)]"
+                        className="bg-[#7B61FF]/10 text-[#7B61FF] border border-[#7B61FF]/30 hover:bg-[#7B61FF] hover:text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.3)]"
                     >
                         <Plus size={16} />
                         Modelos

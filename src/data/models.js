@@ -1,11 +1,11 @@
 // Modelos Evidentes (Tela Principal)
 export const modelsData = [
-    { id: 'google/gemini-3-flash', name: 'Gemini 3 Flash', provider: 'Google', costInput: 0.50, costOutput: 3.00, category: 'Ultra-Fast', badge: 'recommended', isBaseline: true }, // Valores corrigidos conf. documentação
-    { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B', provider: 'Meta', costInput: 0.10, costOutput: 0.32, category: 'Open-Source', badge: null }, // OpenRouter Llama 3.3 70B pricing
-    { id: 'openai/gpt-4.1-mini', name: 'GPT-4.1 Mini', provider: 'OpenAI', costInput: 0.15, costOutput: 0.60, category: 'Efficient', badge: null }, // GPT-4o-mini baseline
-    { id: 'anthropic/claude-4.6-sonnet', name: 'Claude 4.6 Sonnet', provider: 'Anthropic', costInput: 3.00, costOutput: 15.00, category: 'High-Reasoning', badge: null }, // Claude 3.5 Sonnet pricing
-    { id: 'openai/gpt-5.2', name: 'GPT-5.2', provider: 'OpenAI', costInput: 2.50, costOutput: 10.00, category: 'Next-Gen', badge: 'new' }, // Based on premium tier
-    { id: 'anthropic/claude-4.6-opus', name: 'Claude 4.6 Opus', provider: 'Anthropic', costInput: 15.00, costOutput: 75.00, category: 'Powerful', badge: null }, // Claude 3 Opus pricing
+    { id: 'google/gemini-3-flash', name: 'Gemini 3 Flash', provider: 'Google', costInput: 0.50, costOutput: 3.00, category: 'Ultra-Fast', badge: 'recommended', isBaseline: true },
+    { id: 'openai/gpt-5.2', name: 'GPT-5.2', provider: 'OpenAI', costInput: 2.50, costOutput: 10.00, category: 'Next-Gen', badge: 'new' },
+    { id: 'anthropic/claude-4.6-sonnet', name: 'Claude 4.6 Sonnet', provider: 'Anthropic', costInput: 3.00, costOutput: 15.00, category: 'High-Reasoning', badge: null },
+    { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B', provider: 'Meta', costInput: 0.10, costOutput: 0.32, category: 'Open-Source', badge: null },
+    { id: 'openai/gpt-4.1-mini', name: 'GPT-4.1 Mini', provider: 'OpenAI', costInput: 0.15, costOutput: 0.60, category: 'Efficient', badge: null },
+    { id: 'anthropic/claude-4.6-opus', name: 'Claude 4.6 Opus', provider: 'Anthropic', costInput: 15.00, costOutput: 75.00, category: 'Powerful', badge: null },
 ];
 
 // Modelos Adicionais (Catálogo)

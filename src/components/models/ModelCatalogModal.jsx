@@ -116,8 +116,8 @@ const ModelCatalogModal = ({
                                             <button
                                                 onClick={() => handleToggle(model)}
                                                 disabled={isProcessing}
-                                                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isProcessing
-                                                    ? 'bg-[#222] text-gray-500 cursor-not-allowed'
+                                                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all cursor-pointer disabled:cursor-not-allowed ${isProcessing
+                                                    ? 'bg-[#222] text-gray-500'
                                                     : isSelected
                                                         ? 'bg-emerald-500/10 text-emerald-500 hover:bg-red-500/10 hover:text-red-500' // Hover para remover
                                                         : 'bg-[#7B61FF]/10 text-[#7B61FF] hover:bg-[#7B61FF] hover:text-white shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.4)]'
