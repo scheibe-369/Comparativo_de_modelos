@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock, X, Loader2, ArrowRight, Check, Eye, EyeOff } from 'lucide-react';
+import logoOficial from '../../assets/logo-oficial.png';
 import { useAuth } from '../../hooks/useAuth';
 import { GlowingEffect } from '../ui/glowing-effect';
 import Tilt3DCard from '../ui/Tilt3DCard';
@@ -85,7 +86,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                             <div className="flex flex-col items-center mb-8 text-center relative z-10">
                                 <div className="mb-0 relative py-4">
                                     <img
-                                        src="/src/assets/logo-oficial.png"
+                                        src={logoOficial}
                                         alt="Logo Growth Hub"
                                         className="h-20 w-auto object-contain brightness-110 drop-shadow-[0_0_15px_rgba(123,97,255,0.3)] transition-all duration-500 cursor-pointer hover:scale-110 hover:brightness-125 hover:drop-shadow-[0_0_30px_rgba(123,97,255,0.6)]"
                                     />
