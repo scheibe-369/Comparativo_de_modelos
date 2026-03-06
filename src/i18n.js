@@ -275,15 +275,37 @@ const resources = {
     }
 };
 
+const getInitialLanguage = () => {
+    // 1. Check if user already manually selected a language
+    const savedLng = localStorage.getItem('i18nextLng');
+    if (savedLng) return savedLng;
+
+    // 2. Otherwise, check browser language
+    const browserLng = navigator.language || navigator.userLanguage;
+
+    // If it's Brazilian or general Portuguese, return 'pt'
+    if (browserLng.toLowerCase().startsWith('pt')) {
+        return 'pt';
+    }
+
+    // 3. Default for everyone else (International/IP context via Browser API)
+    return 'en';
+};
+
 i18n
     .use(initReactI18next)
     .init({
         resources,
-        lng: "pt", // force pt as default
-        fallbackLng: "pt",
+        lng: getInitialLanguage(),
+        fallbackLng: "en",
         interpolation: {
             escapeValue: false
         }
     });
+
+// Listen for language changes and save to localStorage
+i18n.on('languageChanged', (lng) => {
+    localStorage.setItem('i18nextLng', lng);
+});
 
 export default i18n;
