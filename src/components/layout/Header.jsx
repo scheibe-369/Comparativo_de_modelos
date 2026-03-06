@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { Menu, X, KeyRound, LogIn, User, Lock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Menu, X, KeyRound, LogIn, User, Lock, Globe } from 'lucide-react';
 import GrowthHubLogo from '../ui/Logo';
 
 const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, hasApiKey, user, onOpenAuth, onSignOut }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
 
     const tabs = [
-        { id: 'table', label: 'Custos', requiresAuth: false },
+        { id: 'table', label: t('header.costs'), requiresAuth: false },
         { id: 'lab', label: 'AI Lab', requiresAuth: true },
-        { id: 'simulator', label: 'Simulador', requiresAuth: true },
+        { id: 'simulator', label: t('header.simulator'), requiresAuth: true },
     ];
 
     const handleTabClick = (tabId, requiresAuth) => {
@@ -81,7 +87,26 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                         </button>
                     </div>
 
-                    <div className="h-6 w-px bg-white/5"></div>
+                    {/* Language Toggle */}
+                    <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-full p-0.5 ml-2">
+                        <Globe size={11} className="text-gray-500 ml-1.5" />
+                        <button
+                            onClick={() => changeLanguage('pt')}
+                            className={`px-2.5 py-1 text-[9px] font-black rounded-full cursor-pointer transition-all ${i18n.language === 'pt' ? 'bg-[#7B61FF] text-white' : 'text-gray-500 hover:text-white'
+                                }`}
+                        >
+                            PT
+                        </button>
+                        <button
+                            onClick={() => changeLanguage('en')}
+                            className={`px-2.5 py-1 text-[9px] font-black rounded-full cursor-pointer transition-all ${i18n.language === 'en' ? 'bg-[#7B61FF] text-white' : 'text-gray-500 hover:text-white'
+                                }`}
+                        >
+                            EN
+                        </button>
+                    </div>
+
+                    <div className="h-6 w-px bg-white/5 mx-1"></div>
 
                     {user ? (
                         <div className="flex items-center gap-3">
@@ -93,9 +118,9 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                             </div>
                             <button
                                 onClick={onSignOut}
-                                className="text-[10px] text-gray-500 hover:text-white font-black tracking-widest cursor-pointer transition-colors"
+                                className="text-[10px] text-gray-500 hover:text-white font-black tracking-widest cursor-pointer transition-colors uppercase"
                             >
-                                SAIR
+                                {t('header.logout')}
                             </button>
                         </div>
                     ) : (
@@ -103,7 +128,7 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                             onClick={onOpenAuth}
                             className="bg-[#7B61FF] hover:bg-[#6248E0] text-white px-6 py-2 rounded-full text-[11px] font-black tracking-widest uppercase cursor-pointer transition-all shadow-[0_10px_20px_rgba(123,97,255,0.3)] hover:shadow-[0_15px_30px_rgba(123,97,255,0.4)] hover:-translate-y-0.5 active:translate-y-0"
                         >
-                            Login
+                            {t('header.login')}
                         </button>
                     )}
 
@@ -181,21 +206,35 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                             </button>
                         </div>
 
-                        <div className="flex items-center gap-2 pt-2">
-                            <button
-                                onClick={() => setCurrency('USD')}
-                                className={`flex-1 px-3 py-2.5 text-xs font-bold rounded-lg transition-all ${currency === 'USD' ? 'bg-white text-black' : 'text-gray-500 border border-[#222]'
-                                    }`}
-                            >
-                                USD
-                            </button>
-                            <button
-                                onClick={() => setCurrency('BRL')}
-                                className={`flex-1 px-3 py-2.5 text-xs font-bold rounded-lg transition-all ${currency === 'BRL' ? 'bg-white text-black' : 'text-gray-500 border border-[#222]'
-                                    }`}
-                            >
-                                BRL
-                            </button>
+                        <div className="flex flex-col gap-2 pt-2">
+                            <div className="flex flex-row gap-2">
+                                <button
+                                    onClick={() => setCurrency('USD')}
+                                    className={`flex-1 px-3 py-2.5 text-xs font-bold rounded-lg transition-all ${currency === 'USD' ? 'bg-white text-black' : 'text-gray-500 border border-[#222]'}`}
+                                >
+                                    USD
+                                </button>
+                                <button
+                                    onClick={() => setCurrency('BRL')}
+                                    className={`flex-1 px-3 py-2.5 text-xs font-bold rounded-lg transition-all ${currency === 'BRL' ? 'bg-white text-black' : 'text-gray-500 border border-[#222]'}`}
+                                >
+                                    BRL
+                                </button>
+                            </div>
+                            <div className="flex flex-row gap-2">
+                                <button
+                                    onClick={() => changeLanguage('pt')}
+                                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold rounded-lg transition-all ${i18n.language === 'pt' ? 'bg-[#7B61FF]/20 text-[#7B61FF] border border-[#7B61FF]/30' : 'text-gray-500 border border-[#222]'}`}
+                                >
+                                    <Globe size={14} /> PT
+                                </button>
+                                <button
+                                    onClick={() => changeLanguage('en')}
+                                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold rounded-lg transition-all ${i18n.language === 'en' ? 'bg-[#7B61FF]/20 text-[#7B61FF] border border-[#7B61FF]/30' : 'text-gray-500 border border-[#222]'}`}
+                                >
+                                    <Globe size={14} /> EN
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
