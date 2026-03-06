@@ -152,7 +152,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                                     <button
                                         key={tool.id}
                                         onClick={() => toggleTool(tool.id)}
-                                        className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all ${isActive
+                                        className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${isActive
                                             ? 'bg-[#7B61FF]/10 border border-[#7B61FF]/40 text-white'
                                             : 'bg-[#0d0d0f] border border-[#1a1a1c] text-gray-400 hover:border-[#333]'
                                             }`}

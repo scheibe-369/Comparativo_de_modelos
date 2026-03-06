@@ -12,7 +12,7 @@ const ChatMessage = ({ message }) => {
             <div className={`max-w-[88%] sm:max-w-[80%] flex gap-3 ${isUser ? 'flex-row-reverse' : ''}`}>
                 {/* Avatar */}
                 <div
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isUser ? 'bg-[#222]' : 'bg-[#7B61FF]'
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isUser ? 'bg-[#222]' : ''
                         }`}
                 >
                     {isUser ? (
@@ -25,8 +25,8 @@ const ChatMessage = ({ message }) => {
                 {/* Message Bubble */}
                 <div
                     className={`p-3 sm:p-4 rounded-2xl text-sm leading-relaxed ${isUser
-                            ? 'bg-[#7B61FF] text-white rounded-tr-none'
-                            : 'bg-[#1a1a1c] text-gray-200 rounded-tl-none'
+                        ? 'bg-[#7B61FF] text-white rounded-tr-none'
+                        : 'bg-[#1a1a1c] text-gray-200 rounded-tl-none'
                         }`}
                 >
                     {isUser ? (

@@ -12,62 +12,77 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
     ];
 
     return (
-        <nav className="sticky top-0 z-50 bg-[#070708]/80 backdrop-blur-md border-b border-[#1a1a1a]">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-                {/* Logo */}
-                <div className="flex items-center gap-3">
-                    <div className="bg-[#7B61FF] p-1.5 sm:p-2 rounded-lg shadow-[0_0_15px_rgba(104,81,255,0.4)]">
-                        <GrowthHubLogo className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-                    </div>
-                    <div>
-                        <h1 className="text-base sm:text-xl font-bold text-white tracking-tight uppercase">Growth Hub</h1>
-                        <p className="text-[8px] sm:text-[10px] text-[#7B61FF] font-bold tracking-[0.2em] uppercase">Intelligence Suite</p>
+        <nav className="sticky top-4 sm:top-6 z-50 w-full px-4 flex justify-center">
+            <div className="max-w-7xl w-full h-16 sm:h-20 gh-card-hover rounded-full flex items-center justify-between px-6 sm:px-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] !transform-none">
+
+                {/* Logo and Branding - Left */}
+                <div className="flex items-center gap-3 group cursor-pointer shrink-0" onClick={() => setActiveTab('table')}>
+                    <GrowthHubLogo className="w-8 h-8 sm:w-10 sm:h-10" />
+                    <div className="hidden lg:flex flex-col">
+                        <h1 className="text-sm font-bold text-white tracking-widest uppercase group-hover:text-[#7B61FF] transition-colors duration-300">
+                            Growth Hub
+                        </h1>
+                        <p className="text-[7px] text-[#7B61FF] font-black tracking-[0.4em] uppercase opacity-70">
+                            Analytics
+                        </p>
                     </div>
                 </div>
 
-                {/* Desktop Tabs */}
-                <div className="hidden md:flex items-center gap-1 bg-[#111] p-1 rounded-full border border-[#222]">
+                {/* Desktop Tabs - Centered */}
+                <div className="hidden md:flex items-center gap-6 lg:gap-8 mx-4">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-6 py-2 rounded-full text-xs font-bold transition-all ${activeTab === tab.id
-                                ? 'gh-btn-primary gh-tab-active text-white'
-                                : 'text-gray-500 hover:text-white hover:bg-[#1a1a1c]'
+                            className={`relative py-2 text-[11px] font-black tracking-widest uppercase cursor-pointer transition-all ${activeTab === tab.id
+                                ? 'text-white'
+                                : 'text-gray-500 hover:text-white'
                                 }`}
                         >
                             {tab.label}
+                            {activeTab === tab.id && (
+                                <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#7B61FF] rounded-full animate-fadeIn" />
+                            )}
                             {tab.id === 'lab' && (
-                                <span className={`ml-1.5 inline-block w-1.5 h-1.5 rounded-full ${hasApiKey ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                                <span className={`absolute -top-1 -right-2 w-1.5 h-1.5 rounded-full ${hasApiKey ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'}`} />
                             )}
                         </button>
                     ))}
                 </div>
 
-                {/* Desktop Right Actions */}
-                <div className="hidden md:flex items-center gap-3">
-                    <button
-                        onClick={onOpenApiKey}
-                        className={`p-2 rounded-lg border transition-all gh-btn-icon ${hasApiKey
-                            ? 'border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10'
-                            : 'border-[#222] text-gray-500 hover:text-white hover:border-[#333]'
-                            }`}
-                        title="Configurar API Key"
-                    >
-                        <KeyRound size={16} />
-                    </button>
+                {/* Desktop Right Actions - Right */}
+                <div className="hidden md:flex items-center gap-4 shrink-0">
+                    {/* Currency Toggle as a tiny pill */}
+                    <div className="flex items-center bg-white/5 border border-white/10 rounded-full p-0.5">
+                        <button
+                            onClick={() => setCurrency('USD')}
+                            className={`px-3 py-1 text-[9px] font-black rounded-full cursor-pointer transition-all ${currency === 'USD' ? 'bg-[#7B61FF] text-white' : 'text-gray-500 hover:text-white'
+                                }`}
+                        >
+                            USD
+                        </button>
+                        <button
+                            onClick={() => setCurrency('BRL')}
+                            className={`px-3 py-1 text-[9px] font-black rounded-full cursor-pointer transition-all ${currency === 'BRL' ? 'bg-[#7B61FF] text-white' : 'text-gray-500 hover:text-white'
+                                }`}
+                        >
+                            BRL
+                        </button>
+                    </div>
 
-                    <div className="h-6 w-px bg-[#222] mx-1"></div>
+                    <div className="h-6 w-px bg-white/5"></div>
 
                     {user ? (
-                        <div className="flex items-center gap-3 bg-[#111113] border border-[#1f1f23] rounded-full pl-2 pr-4 py-1.5">
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#7B61FF] to-[#00E5FF] flex items-center justify-center text-[10px] font-bold text-white shadow-[0_0_10px_rgba(123,97,255,0.3)]">
-                                {user.email?.charAt(0).toUpperCase()}
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
+                                <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#7B61FF] to-[#9B8AFF] flex items-center justify-center text-[9px] font-black text-white">
+                                    {user.email?.charAt(0).toUpperCase()}
+                                </div>
+                                <span className="text-[10px] font-bold text-gray-300 max-w-[80px] truncate">{user.email}</span>
                             </div>
-                            <span className="text-xs font-semibold text-gray-300 max-w-[100px] truncate">{user.email}</span>
                             <button
                                 onClick={onSignOut}
-                                className="text-[10px] text-gray-500 hover:text-white tracking-wider font-bold ml-2 transition-colors"
+                                className="text-[10px] text-gray-500 hover:text-white font-black tracking-widest cursor-pointer transition-colors"
                             >
                                 SAIR
                             </button>
@@ -75,31 +90,21 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                     ) : (
                         <button
                             onClick={onOpenAuth}
-                            className="bg-[#7B61FF]/10 text-[#7B61FF] border border-[#7B61FF]/30 hover:bg-[#7B61FF]/20 px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 hover:shadow-[0_0_15px_rgba(123,97,255,0.2)]"
+                            className="bg-[#7B61FF] hover:bg-[#6248E0] text-white px-6 py-2 rounded-full text-[11px] font-black tracking-widest uppercase cursor-pointer transition-all shadow-[0_10px_20px_rgba(123,97,255,0.3)] hover:shadow-[0_15px_30px_rgba(123,97,255,0.4)] hover:-translate-y-0.5 active:translate-y-0"
                         >
-                            <LogIn size={14} />
                             Login
                         </button>
                     )}
 
-                    <div className="h-6 w-px bg-[#222] mx-1"></div>
-
-                    <div className="flex items-center gap-1 border border-[#222] rounded-lg p-1">
-                        <button
-                            onClick={() => setCurrency('USD')}
-                            className={`px-3 py-1 text-[10px] font-bold rounded transition-all ${currency === 'USD' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'
-                                }`}
-                        >
-                            USD
-                        </button>
-                        <button
-                            onClick={() => setCurrency('BRL')}
-                            className={`px-3 py-1 text-[10px] font-bold rounded transition-all ${currency === 'BRL' ? 'bg-white text-black' : 'text-gray-500 hover:text-white'
-                                }`}
-                        >
-                            BRL
-                        </button>
-                    </div>
+                    <button
+                        onClick={onOpenApiKey}
+                        className={`p-2 rounded-full border cursor-pointer transition-all ${hasApiKey
+                            ? 'border-emerald-500/30 text-emerald-500 bg-emerald-500/5 hover:bg-emerald-500/10'
+                            : 'border-white/10 text-gray-500 hover:text-white hover:bg-white/5'
+                            }`}
+                    >
+                        <KeyRound size={16} />
+                    </button>
                 </div>
 
                 {/* Mobile Hamburger */}

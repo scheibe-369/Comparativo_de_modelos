@@ -1,11 +1,17 @@
 import React from 'react';
+import logoOficial from '../../assets/logo-oficial.png';
 
 const GrowthHubLogo = ({ className = 'w-8 h-8' }) => (
-    <svg viewBox="0 0 100 100" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
-        <rect x="70" y="30" width="12" height="40" rx="3" />
-        <path d="M52 48 L42 58 A 3 3 0 0 1 38 54 L48 44 A 3 3 0 0 1 52 48 Z" />
-        <path d="M60 25 L35 25 A 5 5 0 0 0 30 30 L30 35 L23 35 A 3 3 0 0 0 20 38 L20 62 A 3 3 0 0 0 23 65 L30 65 L30 70 A 5 5 0 0 0 35 75 L60 75 A 3 3 0 0 0 63 72 L63 65 A 3 3 0 0 0 60 62 L38 62 L38 38 L60 38 A 3 3 0 0 0 63 35 L63 28 A 3 3 0 0 0 60 25 Z" />
-    </svg>
+    <div className={`${className} relative group flex items-center justify-center`}>
+        {/* Glow suave no fundo customizado para a nova logo */}
+        <div className="absolute inset-0 bg-[#7B61FF]/10 blur-xl rounded-full group-hover:bg-[#7B61FF]/25 transition-all duration-700 opacity-40"></div>
+
+        <img
+            src={logoOficial}
+            alt="Growth Hub Logo"
+            className="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-110 contrast-[1.1]"
+        />
+    </div>
 );
 
 export default GrowthHubLogo;

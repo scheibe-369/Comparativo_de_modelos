@@ -54,7 +54,7 @@ const App = () => {
         onSignOut={signOut}
       />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 relative z-10">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-6 sm:pb-10 relative z-10">
         {activeTab === 'table' && (
           <div key="table-tab">
             <div className="animate-slideUp">
