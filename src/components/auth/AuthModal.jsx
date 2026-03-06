@@ -123,7 +123,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 className="w-full pl-10 pr-4 py-3.5 bg-[#15152a]/40 border border-[#222] focus:border-[#7B61FF]/60 outline-none rounded-xl text-sm text-white transition-all placeholder:text-gray-600 focus:shadow-[0_0_20px_rgba(123,97,255,0.15)] focus:bg-[#1a1a32]/60"
-                                                placeholder="gabrielporceli.goat@gmail.com"
+                                                placeholder="seu email"
                                             />
                                         </div>
                                     </div>
