@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MessageSquare, Calendar, Search, Package, Info, Plus } from 'lucide-react';
 import { TOKENS_PER_CONVERSATION } from '../../data/models';
 import { formatCurrency } from '../../utils/formatters';
@@ -9,38 +10,41 @@ const TOKENS_PER_TOOL = 8000;
 const MARGIN = 0.08;
 const BASE_TOOLS = 2; // Every agent has at least 2 base tools (hidden from UI)
 
-const TOOL_OPTIONS = [
-    {
-        id: 'scheduling',
-        label: 'Agendamento',
-        description: 'Verificar horários e agendar compromissos',
-        icon: Calendar,
-        toolCount: 2,
-        toolNames: ['Verificar agendamento', 'Agendar'],
-    },
-    {
-        id: 'spreadsheet',
-        label: 'Busca em Planilha/CRM',
-        description: 'Consultar dados em planilhas ou sistemas',
-        icon: Search,
-        toolCount: 1,
-        toolNames: ['Buscar dados'],
-    },
-    {
-        id: 'inventory',
-        label: 'Verificação de Estoque',
-        description: 'Checar disponibilidade de produtos',
-        icon: Package,
-        toolCount: 1,
-        toolNames: ['Verificar estoque'],
-    },
-];
+const TOOL_OPTIONS_OLD = [];
 
 // Reference: 6 questions + 5 tools = (6×4200) + (5×8000) = 65200 × 1.08 ≈ 70k ✓
 
 const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) => {
+    const { t } = useTranslation();
     const [questions, setQuestions] = useState(6);
     const [activeTools, setActiveTools] = useState([]);
+
+    const TOOL_OPTIONS = [
+        {
+            id: 'scheduling',
+            label: t('attendanceSimulator.scheduling'),
+            description: t('attendanceSimulator.schedulingDesc'),
+            icon: Calendar,
+            toolCount: 2,
+            toolNames: ['Verificar agendamento', 'Agendar'],
+        },
+        {
+            id: 'spreadsheet',
+            label: t('attendanceSimulator.spreadsheet'),
+            description: t('attendanceSimulator.spreadsheetDesc'),
+            icon: Search,
+            toolCount: 1,
+            toolNames: ['Buscar dados'],
+        },
+        {
+            id: 'inventory',
+            label: t('attendanceSimulator.inventory'),
+            description: t('attendanceSimulator.inventoryDesc'),
+            icon: Package,
+            toolCount: 1,
+            toolNames: ['Verificar estoque'],
+        },
+    ];
 
     // Removido getSortedModels() estático - usando models passado via props
 
@@ -83,10 +87,10 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
             <div className="animate-fadeIn flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                        Simulador de Atendimento
+                        {t('attendanceSimulator.title')}
                     </h2>
                     <p className="text-gray-500 text-sm mt-1">
-                        Descreva como funciona o atendimento do seu agente para calcular o custo real por conversa.
+                        {t('attendanceSimulator.subtitle')}
                     </p>
                 </div>
                 <button
@@ -94,7 +98,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                     className="bg-[#7B61FF]/10 text-[#7B61FF] border border-[#7B61FF]/30 hover:bg-[#7B61FF] hover:text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.3)] self-start sm:self-auto"
                 >
                     <Plus size={16} />
-                    Modelos
+                    {t('attendanceSimulator.addModels')}
                 </button>
             </div>
 
@@ -107,7 +111,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
                                 <MessageSquare size={18} className="text-[#7B61FF]" />
-                                <span className="text-sm font-bold text-white">Perguntas do Agente</span>
+                                <span className="text-sm font-bold text-white">{t('attendanceSimulator.agentQuestions')}</span>
                             </div>
                             <span className="text-2xl font-bold text-[#7B61FF] font-mono">{questions}</span>
                         </div>
@@ -131,7 +135,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                             ))}
                         </div>
                         <p className="text-[10px] text-gray-500 mt-3">
-                            Cada execução (pergunta/resposta) consome ~4.200 tokens de prompt
+                            {t('attendanceSimulator.consumePrompts')}
                         </p>
                     </div>
 
@@ -139,10 +143,10 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                     <div className="bg-[#111113] border border-[#1f1f23] rounded-2xl p-5 gh-card-hover gh-border-glow">
                         <div className="flex items-center gap-2 mb-4">
                             <Search size={18} className="text-[#7B61FF]" />
-                            <span className="text-sm font-bold text-white">Ferramentas (Tools)</span>
+                            <span className="text-sm font-bold text-white">{t('attendanceSimulator.tools')}</span>
                         </div>
                         <p className="text-[10px] text-gray-500 mb-4">
-                            Cada ativação de tool consome ~8.000 tokens. Selecione as que o agente usa:
+                            {t('attendanceSimulator.consumeTools')}
                         </p>
                         <div className="space-y-2">
                             {TOOL_OPTIONS.map((tool) => {
@@ -164,7 +168,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                                         </div>
                                         <div className="text-right">
                                             <span className={`text-[9px] font-mono ${isActive ? 'text-[#7B61FF]' : 'text-gray-600'}`}>
-                                                {tool.toolCount} tool{tool.toolCount > 1 ? 's' : ''} · {(tool.toolCount * TOKENS_PER_TOOL / 1000).toFixed(0)}k
+                                                {tool.toolCount} {tool.toolCount > 1 ? t('attendanceSimulator.toolsPlural') : t('attendanceSimulator.tool')} · {(tool.toolCount * TOKENS_PER_TOOL / 1000).toFixed(0)}k
                                             </span>
                                         </div>
                                     </button>
@@ -179,7 +183,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                     {/* Token Summary */}
                     <div className="bg-[#111113] border border-[#1f1f23] rounded-2xl p-5 gh-card-hover gh-border-glow">
                         <div className="flex items-center justify-between mb-4">
-                            <span className="text-sm font-bold text-white">Tokens por Conversa</span>
+                            <span className="text-sm font-bold text-white">{t('attendanceSimulator.tokensPerConv')}</span>
                             <span className="text-2xl font-bold text-[#7B61FF] font-mono">
                                 {(tokenBreakdown.total / 1000).toFixed(1)}k
                             </span>
@@ -190,19 +194,19 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                             <div
                                 className="h-full bg-[#7B61FF] transition-all duration-500"
                                 style={{ width: `${(tokenBreakdown.executionTokens / tokenBreakdown.total) * 100}%` }}
-                                title="Execuções"
+                                title={t('attendanceSimulator.executions')}
                             />
                             {tokenBreakdown.totalToolTokens > 0 && (
                                 <div
                                     className="h-full bg-amber-500 transition-all duration-500"
                                     style={{ width: `${(tokenBreakdown.totalToolTokens / tokenBreakdown.total) * 100}%` }}
-                                    title="Tools"
+                                    title={t('attendanceSimulator.toolsLegend')}
                                 />
                             )}
                             <div
                                 className="h-full bg-red-400/60 transition-all duration-500"
                                 style={{ width: `${(tokenBreakdown.marginTokens / tokenBreakdown.total) * 100}%` }}
-                                title="Margem 8%"
+                                title={t('attendanceSimulator.marginLegend')}
                             />
                         </div>
 
@@ -210,15 +214,15 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                         <div className="grid grid-cols-3 gap-2 text-[10px]">
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-[#7B61FF]" />
-                                <span className="text-gray-400">Execuções: {(tokenBreakdown.executionTokens / 1000).toFixed(1)}k</span>
+                                <span className="text-gray-400">{t('attendanceSimulator.executions')}: {(tokenBreakdown.executionTokens / 1000).toFixed(1)}k</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-amber-500" />
-                                <span className="text-gray-400">Tools: {(tokenBreakdown.totalToolTokens / 1000).toFixed(1)}k</span>
+                                <span className="text-gray-400">{t('attendanceSimulator.toolsLegend')}: {(tokenBreakdown.totalToolTokens / 1000).toFixed(1)}k</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-red-400/60" />
-                                <span className="text-gray-400">Margem: +{(tokenBreakdown.marginTokens / 1000).toFixed(1)}k</span>
+                                <span className="text-gray-400">{t('attendanceSimulator.marginLegend')}: +{(tokenBreakdown.marginTokens / 1000).toFixed(1)}k</span>
                             </div>
                         </div>
 
@@ -228,7 +232,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                     <div className="bg-[#111113] border border-[#1f1f23] rounded-2xl p-5 gh-card-hover gh-border-glow">
                         <div className="flex items-center gap-2 mb-4">
                             <Info size={16} className="text-[#7B61FF]" />
-                            <span className="text-sm font-bold text-white">Custo por Conversa</span>
+                            <span className="text-sm font-bold text-white">{t('attendanceSimulator.costPerConv')}</span>
                         </div>
                         <div className="space-y-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
                             {models.map((model) => {
@@ -271,7 +275,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
 
                     {/* Monthly projection */}
                     <div className="bg-[#111113] border border-[#1f1f23] p-5 sm:p-6 rounded-2xl gh-card-hover gh-card-shine animate-fadeIn">
-                        <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">Projeção Mensal (100 conv/dia)</p>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">{t('attendanceSimulator.monthlyProjection')}</p>
                         <div className="grid grid-cols-2 gap-3 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
                             {models.map((model) => {
                                 const costPerConv = calculateModelCost(model);
@@ -282,7 +286,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                                         <p className="text-[16px] sm:text-lg font-bold font-mono text-white">
                                             {formatCurrency(monthly, currency, true)}
                                         </p>
-                                        <p className="text-[9px] text-gray-600">/mês</p>
+                                        <p className="text-[9px] text-gray-600">{t('attendanceSimulator.perMonth')}</p>
                                     </div>
                                 );
                             })}

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Calculator, Zap, Cpu, ShieldCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { getSortedModels } from '../../data/models';
 
 const StatsCards = () => {
+    const { t } = useTranslation();
     const allModels = getSortedModels();
     const recommended = allModels.find(m => m.badge === 'recommended') || allModels[0];
     const openSource = allModels.find(m => m.provider === 'Meta' || m.id.includes('llama')) || allModels[1];
@@ -12,10 +14,10 @@ const StatsCards = () => {
         {
             icon: Calculator,
             iconColor: 'text-[#7B61FF]',
-            label: 'Contexto Médio',
+            label: t('statsCards.avgContext'),
             value: '70k',
-            sub: 'tokens',
-            detail: '*Média por conversa (Estimativa Growth Hub)',
+            sub: t('statsCards.tokens'),
+            detail: t('statsCards.avgContextDesc'),
             detailColor: 'text-gray-600/80 italic font-normal',
             extra: (
                 <div className="mt-4 h-1 w-full bg-[#1a1a1c] rounded-full overflow-hidden">
@@ -26,31 +28,31 @@ const StatsCards = () => {
         {
             icon: ShieldCheck,
             iconColor: 'text-blue-400',
-            label: 'Mais Recomendável',
+            label: t('statsCards.mostRecommended'),
             value: 'Gemini 3 Flash',
             sub: (
                 <span className="text-xs font-semibold bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/20 ml-1">
-                    Preview
+                    {t('statsCards.preview')}
                 </span>
             ),
-            detail: '*Baseado no melhor custo x performance global',
+            detail: t('statsCards.mostRecommendedDesc'),
             detailColor: 'text-gray-500/80 italic font-normal',
         },
         {
             icon: Cpu,
             iconColor: 'text-amber-500',
-            label: 'Open-Source',
+            label: t('statsCards.openSource'),
             value: openSource.name,
-            detail: 'Privacidade total via auto-hospedagem, oferecendo o menor custo do mercado.',
+            detail: t('statsCards.openSourceDesc'),
             detailColor: 'text-amber-500/90 font-medium',
         },
         {
             icon: Zap,
             iconColor: 'text-pink-400',
-            label: 'Modelo para Iniciantes',
+            label: t('statsCards.beginnerModel'),
             value: beginnerModel.name,
             valueColor: 'text-white',
-            detail: 'Fácil integração e o melhor custo de entrada do mercado',
+            detail: t('statsCards.beginnerModelDesc'),
             detailColor: 'text-pink-400 font-medium',
         },
     ];

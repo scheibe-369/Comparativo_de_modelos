@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Sliders } from 'lucide-react';
 import { TOKENS_PER_CONVERSATION } from '../../data/models';
 import { calculateMonthlyCost } from '../../utils/calculations';
 import { formatCurrency } from '../../utils/formatters';
 
 const CostCalculator = ({ currency, exchangeRate, models }) => {
+    const { t } = useTranslation();
     const [convsPerDay, setConvsPerDay] = useState(50);
 
     return (
@@ -13,14 +15,14 @@ const CostCalculator = ({ currency, exchangeRate, models }) => {
                 <div>
                     <h3 className="text-lg sm:text-xl font-bold text-white mb-1 tracking-tight flex items-center gap-2">
                         <Sliders size={20} className="text-[#7B61FF]" />
-                        Simulador de Custo Mensal
+                        {t('costCalculator.title')}
                     </h3>
                     <p className="text-gray-500 text-xs sm:text-sm italic">
-                        Arraste o slider para projetar o custo mensal baseado no volume de conversas
+                        {t('costCalculator.subtitle')}
                     </p>
                 </div>
                 <div className="bg-[#070708] px-4 py-3 rounded-xl border border-[#7B61FF]/30 text-center min-w-[120px]">
-                    <p className="text-[10px] text-gray-500 font-bold uppercase">Conversas/dia</p>
+                    <p className="text-[10px] text-gray-500 font-bold uppercase">{t('costCalculator.convsPerDay')}</p>
                     <p className="text-2xl font-bold text-[#7B61FF] font-mono">{convsPerDay}</p>
                 </div>
             </div>
@@ -42,7 +44,7 @@ const CostCalculator = ({ currency, exchangeRate, models }) => {
                             className="absolute text-[10px] text-gray-600 -translate-x-1/2"
                             style={{ left: `${((val - 1) / 499) * 100}%` }}
                         >
-                            {val}/dia
+                            {val}{t('costCalculator.perDay')}
                         </span>
                     ))}
                 </div>
@@ -76,7 +78,7 @@ const CostCalculator = ({ currency, exchangeRate, models }) => {
                             <p className="text-lg font-bold font-mono text-white">
                                 {formatCurrency(monthlyCost, currency, true)}
                             </p>
-                            <p className="text-[10px] text-gray-500 mt-1">/mês ({convsPerDay * 30} conversas)</p>
+                            <p className="text-[10px] text-gray-500 mt-1">{t('costCalculator.perMonth')} ({convsPerDay * 30} {t('costCalculator.conversations')})</p>
                         </div>
                     );
                 })}

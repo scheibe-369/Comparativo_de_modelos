@@ -1,10 +1,12 @@
 import React from 'react';
 import { Info, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { TOKENS_PER_CONVERSATION } from '../../data/models';
 import { formatCurrency, formatUSD } from '../../utils/formatters';
 import { calculateCost } from '../../utils/calculations';
 
 const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
+    const { t } = useTranslation();
     const sortedModels = models;
 
     return (
@@ -13,10 +15,10 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
             <div className="p-5 sm:p-8 border-b border-[#1f1f23] flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-lg sm:text-2xl font-bold text-white mb-1 tracking-tight">
-                        Comparativo Estratégico de Modelos
+                        {t('costTable.title')}
                     </h2>
                     <p className="text-gray-500 text-xs sm:text-sm italic">
-                        Baseado em estimativas de mercado e blending de Input/Output.
+                        {t('costTable.subtitle')}
                     </p>
                 </div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -25,7 +27,7 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                         className="bg-[#7B61FF]/10 text-[#7B61FF] border border-[#7B61FF]/30 hover:bg-[#7B61FF] hover:text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.3)]"
                     >
                         <Plus size={16} />
-                        Modelos
+                        {t('costTable.addModels')}
                     </button>
                     <div className="bg-[#070708] px-3 sm:px-4 py-2 rounded-xl border border-[#222] flex items-center gap-2">
                         <Info size={14} className="text-[#7B61FF]" />
@@ -41,11 +43,11 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                 <table className="w-full text-left border-collapse min-w-[600px]">
                     <thead>
                         <tr className="bg-[#0d0d0f] text-gray-500 text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em]">
-                            <th className="p-4 sm:p-6 font-bold">Modelo / IA</th>
-                            <th className="p-4 sm:p-6 font-bold">Provedor</th>
-                            <th className="p-4 sm:p-6 font-bold text-right">In / Out (1M)</th>
-                            <th className="p-4 sm:p-6 font-bold text-right text-[#7B61FF]">Custo/Conv (70k)</th>
-                            <th className="p-4 sm:p-6 font-bold text-right">Impacto (1000 Conv)</th>
+                            <th className="p-4 sm:p-6 font-bold">{t('costTable.col1')}</th>
+                            <th className="p-4 sm:p-6 font-bold">{t('costTable.col2')}</th>
+                            <th className="p-4 sm:p-6 font-bold text-right">{t('costTable.col3')}</th>
+                            <th className="p-4 sm:p-6 font-bold text-right text-[#7B61FF]">{t('costTable.col4')}</th>
+                            <th className="p-4 sm:p-6 font-bold text-right">{t('costTable.col5')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-[#1a1a1c]">
@@ -67,7 +69,7 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                                                 )}
                                                 {model.badge === 'recommended' && (
                                                     <span className="ml-2 text-[8px] bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded uppercase tracking-tighter animate-pulse">
-                                                        ★ Recomendado
+                                                        {t('costTable.recommended')}
                                                     </span>
                                                 )}
                                             </p>

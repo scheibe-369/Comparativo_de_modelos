@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Plus, Check, Loader2, Sparkles } from 'lucide-react';
 import { GlowingEffect } from '../ui/glowing-effect';
 
@@ -11,6 +12,7 @@ const ModelCatalogModal = ({
     onRemoveModel,
     loading
 }) => {
+    const { t } = useTranslation();
     const [processingId, setProcessingId] = useState(null);
 
     if (!isOpen) return null;
@@ -57,10 +59,10 @@ const ModelCatalogModal = ({
                                 <div>
                                     <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
                                         <Sparkles className="text-[#7B61FF]" size={24} />
-                                        Catálogo de Modelos
+                                        {t('modelCatalog.title')}
                                     </h3>
                                     <p className="text-sm text-gray-400 mt-1">
-                                        Selecione modelos adicionais para comparar no seu dashboard.
+                                        {t('modelCatalog.subtitle')}
                                     </p>
                                 </div>
                                 <button
@@ -78,7 +80,7 @@ const ModelCatalogModal = ({
                                     </div>
                                 ) : catalogModels.length === 0 ? (
                                     <div className="py-8 text-center text-gray-500 text-sm">
-                                        Nenhum modelo adicional disponível no momento no catálogo.
+                                        {t('modelCatalog.emptyState')}
                                     </div>
                                 ) : (
                                     catalogModels.map((model) => {
@@ -140,7 +142,7 @@ const ModelCatalogModal = ({
                                                                 ? 'bg-emerald-500/10 text-emerald-500 hover:bg-red-500/10 hover:text-red-500' // Hover para remover
                                                                 : 'bg-[#7B61FF]/10 text-[#7B61FF] hover:bg-[#7B61FF] hover:text-white shadow-[0_0_15px_rgba(123,97,255,0.1)] hover:shadow-[0_0_20px_rgba(123,97,255,0.4)]'
                                                             }`}
-                                                        title={isSelected ? "Remover do Dashboard" : "Adicionar ao Dashboard"}
+                                                        title={isSelected ? t('modelCatalog.removeFromDashboard') : t('modelCatalog.addToDashboard')}
                                                     >
                                                         {isProcessing ? (
                                                             <Loader2 size={18} className="animate-spin" />

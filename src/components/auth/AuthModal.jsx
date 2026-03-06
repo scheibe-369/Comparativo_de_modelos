@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Mail, Lock, X, Loader2, ArrowRight, Check, Eye, EyeOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import logoOficial from '../../assets/logo-oficial.png';
 import { useAuth } from '../../hooks/useAuth';
 import { GlowingEffect } from '../ui/glowing-effect';
 import Tilt3DCard from '../ui/Tilt3DCard';
 
 const AuthModal = ({ isOpen, onClose }) => {
+    const { t } = useTranslation();
     const { signIn, signUp, resetPassword, isRecoveringPassword, setIsRecoveringPassword, updatePassword } = useAuth();
     const [isLogin, setIsLogin] = useState(true);
     const [isForgotPassword, setIsForgotPassword] = useState(false);
@@ -28,7 +30,7 @@ const AuthModal = ({ isOpen, onClose }) => {
         try {
             if (isRecoveringPassword) {
                 await updatePassword(password);
-                setSuccessMessage("Senha atualizada com sucesso!");
+                setSuccessMessage(t('authModal.passwordUpdated'));
                 setTimeout(() => {
                     setIsRecoveringPassword(false);
                     setIsLogin(true);
@@ -36,13 +38,13 @@ const AuthModal = ({ isOpen, onClose }) => {
                 }, 2000);
             } else if (isForgotPassword) {
                 await resetPassword(email);
-                setSuccessMessage("Link de recuperação enviado com sucesso!");
+                setSuccessMessage(t('authModal.recoveryLinkSent'));
             } else if (isLogin) {
                 await signIn(email, password);
                 onClose();
             } else {
                 await signUp(email, password);
-                setSuccessMessage('Conta criada com sucesso! Faça login.');
+                setSuccessMessage(t('authModal.accountCreated'));
                 setIsLogin(true);
             }
         } catch (err) {
@@ -92,10 +94,10 @@ const AuthModal = ({ isOpen, onClose }) => {
                                     />
                                 </div>
                                 <h3 className="text-2xl font-bold text-white tracking-tight mb-1">
-                                    {isRecoveringPassword ? 'Criar Nova Senha' : isForgotPassword ? 'Recuperar Senha' : isLogin ? 'Bem-vindo de volta' : 'Criar nova conta'}
+                                    {isRecoveringPassword ? t('authModal.createNewPassword') : isForgotPassword ? t('authModal.recoverPassword') : isLogin ? t('authModal.welcomeBack') : t('authModal.createNewAccount')}
                                 </h3>
                                 <p className="text-gray-500 text-sm font-medium">
-                                    {isRecoveringPassword ? 'Digite sua nova senha abaixo' : isForgotPassword ? 'Enviaremos um link para seu email' : isLogin ? 'Faça login para continuar' : 'Cadastre-se para começar'}
+                                    {isRecoveringPassword ? t('authModal.typeNewPassword') : isForgotPassword ? t('authModal.willSendLink') : isLogin ? t('authModal.loginToContinue') : t('authModal.signupToStart')}
                                 </p>
                             </div>
 
@@ -123,7 +125,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 className="w-full pl-10 pr-4 py-3.5 bg-[#15152a]/40 border border-[#222] focus:border-[#7B61FF]/60 outline-none rounded-xl text-sm text-white transition-all placeholder:text-gray-600 focus:shadow-[0_0_20px_rgba(123,97,255,0.15)] focus:bg-[#1a1a32]/60"
-                                                placeholder="seu email"
+                                                placeholder={t('authModal.yourEmailPlaceholder')}
                                             />
                                         </div>
                                     </div>
@@ -142,7 +144,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
                                                     className="w-full pl-10 pr-12 py-3.5 bg-[#15152a]/40 border border-[#222] focus:border-[#7B61FF]/60 outline-none rounded-xl text-sm text-white transition-all placeholder:text-gray-600 focus:shadow-[0_0_20px_rgba(123,97,255,0.15)] focus:bg-[#1a1a32]/60"
-                                                    placeholder={isRecoveringPassword ? "Nova senha" : "••••••••••••"}
+                                                    placeholder={isRecoveringPassword ? t('authModal.newPasswordPlaceholder') : "••••••••••••"}
                                                 />
                                                 <button
                                                     type="button"
@@ -167,12 +169,12 @@ const AuthModal = ({ isOpen, onClose }) => {
                                                             onChange={() => setRememberMe(!rememberMe)}
                                                         />
                                                     </div>
-                                                    <span className="text-sm font-medium text-gray-400 group-hover/check:text-gray-300 transition-colors">Lembrar de mim</span>
+                                                    <span className="text-sm font-medium text-gray-400 group-hover/check:text-gray-300 transition-colors">{t('authModal.rememberMe')}</span>
                                                 </label>
 
                                                 {isLogin && (
                                                     <button type="button" onClick={() => { setIsForgotPassword(true); setError(null); setSuccessMessage(null); }} className="text-xs font-semibold text-[#7B61FF] hover:text-[#9B8AFF] transition-colors cursor-pointer">
-                                                        Esqueci a senha
+                                                        {t('authModal.forgotPasswordBtn')}
                                                     </button>
                                                 )}
                                             </div>
@@ -192,7 +194,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                         <Loader2 size={18} className="animate-spin" />
                                     ) : (
                                         <>
-                                            {isRecoveringPassword ? 'Redefinir Senha' : isForgotPassword ? 'Enviar Link' : isLogin ? 'Entrar' : 'Criar Conta Agora'}
+                                            {isRecoveringPassword ? t('authModal.resetPasswordLoading') : isForgotPassword ? t('authModal.sendLink') : isLogin ? t('authModal.enterBtn') : t('authModal.createAccountNow')}
                                             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                                         </>
                                     )}
@@ -217,10 +219,10 @@ const AuthModal = ({ isOpen, onClose }) => {
                                     className="text-sm font-medium text-gray-400 hover:text-white transition-colors border-b border-transparent hover:border-[#7B61FF] cursor-pointer"
                                 >
                                     {isRecoveringPassword || isForgotPassword
-                                        ? 'Voltar para o login'
+                                        ? t('authModal.backToLogin')
                                         : isLogin
-                                            ? 'Não tem uma conta? Cadastre-se'
-                                            : 'Já possui conta? Faça login seguro'}
+                                            ? t('authModal.dontHaveAccount')
+                                            : t('authModal.alreadyHaveAccount')}
                                 </button>
                             </div>
                         </div>

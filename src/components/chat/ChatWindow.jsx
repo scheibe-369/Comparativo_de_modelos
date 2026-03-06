@@ -5,9 +5,11 @@ import { formatCurrency } from '../../utils/formatters';
 import { calculateCost } from '../../utils/calculations';
 import { callOpenRouter } from '../../utils/api';
 import GrowthHubLogo from '../ui/Logo';
+import { useTranslation } from 'react-i18next';
 import ChatMessage from './ChatMessage';
 
 const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
+    const { t } = useTranslation();
     const [prompt, setPrompt] = useState('');
     const [messages, setMessages] = useState(() => {
         try {
@@ -40,7 +42,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
         if (!prompt.trim() || isLoading) return;
 
         if (!apiKey) {
-            setError('Configure sua API Key primeiro clicando no ícone 🔑');
+            setError(t('chatWindow.configureApiKey'));
             return;
         }
 
@@ -54,7 +56,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
             const text = await callOpenRouter(prompt, messages, apiKey, selectedModel);
             setMessages(prev => [...prev, { role: 'assistant', content: text, timestamp: Date.now() }]);
         } catch (err) {
-            setError(err.message || 'Erro ao processar. Tente novamente.');
+            setError(err.message || t('chatWindow.errorProcessing'));
         } finally {
             setIsLoading(false);
             inputRef.current?.focus();
@@ -72,7 +74,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
         const text = messages
             .map(m => `[${m.role === 'user' ? 'Você' : model?.name || 'AI'}]\n${m.content}`)
             .join('\n\n---\n\n');
-        const header = `Growth Hub AI Lab — Conversa exportada\nModelo: ${model?.name}\nData: ${new Date().toLocaleString('pt-BR')}\n${'='.repeat(50)}\n\n`;
+        const header = `${t('chatWindow.exportHeader')}\n${t('chatWindow.model')}: ${model?.name}\n${t('chatWindow.date')}: ${new Date().toLocaleString('pt-BR')}\n${'='.repeat(50)}\n\n`;
         const blob = new Blob([header + text], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -97,7 +99,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                     <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${apiKey ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
                     <h2 className="font-bold text-white tracking-tight flex items-center gap-2 text-sm sm:text-base truncate">
-                        <span className="hidden sm:inline">Growth Lab:</span>
+                        <span className="hidden sm:inline">{t('chatWindow.growthLab')}</span>
                         <select
                             value={selectedModel}
                             onChange={(e) => setSelectedModel(e.target.value)}
@@ -117,21 +119,21 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
                             className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] sm:text-xs font-bold hover:bg-red-500/20 transition-colors"
                         >
                             <KeyRound size={12} />
-                            <span className="hidden sm:inline">Configurar Key</span>
+                            <span className="hidden sm:inline">{t('chatWindow.configKey')}</span>
                         </button>
                     )}
                     <button
                         onClick={handleExport}
                         disabled={messages.length === 0}
                         className="text-gray-500 hover:text-white transition-colors disabled:opacity-30 p-1.5"
-                        title="Exportar conversa"
+                        title={t('chatWindow.exportChat')}
                     >
                         <Download size={16} />
                     </button>
                     <button
                         onClick={handleClear}
                         className="text-gray-500 hover:text-white transition-colors p-1.5"
-                        title="Limpar chat"
+                        title={t('chatWindow.clearChat')}
                     >
                         <RefreshCcw size={16} />
                     </button>
@@ -143,11 +145,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
                 {messages.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center opacity-40 px-4">
                         <GrowthHubLogo className="w-12 h-12 text-[#7B61FF] mb-4" />
-                        <p className="text-sm font-medium leading-relaxed">
-                            Inicie uma conversa para testar o modelo selecionado via OpenRouter.
-                            <br />
-                            As respostas usam <strong>Markdown</strong> para melhor formatação.
-                        </p>
+                        <p className="text-sm font-medium leading-relaxed" dangerouslySetInnerHTML={{ __html: t('chatWindow.startConv') }} />
                     </div>
                 ) : (
                     messages.map((msg, i) => <ChatMessage key={i} message={msg} />)
@@ -158,7 +156,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
                         <div className="bg-[#1a1a1c] p-4 rounded-2xl flex items-center gap-3">
                             <Loader2 className="w-4 h-4 animate-spin text-[#7B61FF]" />
                             <span className="text-xs font-bold text-gray-500 animate-pulse">
-                                GROWTH HUB ESTÁ PENSANDO...
+                                {t('chatWindow.thinking')}
                             </span>
                         </div>
                     </div>
@@ -181,7 +179,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
                         type="text"
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
-                        placeholder={apiKey ? 'Envie uma mensagem para o agente...' : 'Configure sua API Key para começar...'}
+                        placeholder={apiKey ? t('chatWindow.sendMsgPls') : t('chatWindow.cfgKeyStart')}
                         disabled={!apiKey}
                         className="w-full bg-[#161619] border border-[#222] rounded-xl sm:rounded-2xl py-3 sm:py-4 pl-4 sm:pl-6 pr-14 text-sm text-white focus:outline-none focus:border-[#7B61FF] transition-all group-hover:border-[#333] disabled:opacity-50"
                     />
@@ -194,7 +192,7 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
                     </button>
                 </div>
                 <p className="mt-3 text-[9px] sm:text-[10px] text-center text-gray-600 font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em]">
-                    Custo estimado desta sessão:{' '}
+                    {t('chatWindow.estCost')}{' '}
                     <span className="text-white">{formatCurrency(sessionCost, currency)}</span>
                 </p>
             </form>

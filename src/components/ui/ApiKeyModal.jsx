@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { KeyRound, Eye, EyeOff, X, ExternalLink, Check } from 'lucide-react';
 
 const ApiKeyModal = ({ isOpen, onClose, apiKey, onSave }) => {
+    const { t } = useTranslation();
     const [inputKey, setInputKey] = useState(apiKey || '');
     const [showKey, setShowKey] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -36,7 +38,7 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSave }) => {
                             <KeyRound size={20} className="text-[#7B61FF]" />
                         </div>
                         <div>
-                            <h3 className="text-white font-bold">API Key</h3>
+                            <h3 className="text-white font-bold">{t('apiKeyModal.apiKey')}</h3>
                             <p className="text-xs text-gray-500">OpenRouter</p>
                         </div>
                     </div>
@@ -48,8 +50,7 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSave }) => {
                 {/* Body */}
                 <div className="p-6 space-y-4">
                     <p className="text-sm text-gray-400 leading-relaxed">
-                        Insira sua chave da API do OpenRouter para usar o AI Lab.
-                        A chave fica salva apenas no seu navegador.
+                        {t('apiKeyModal.openRouterDesc')}
                     </p>
 
                     <div className="relative">
@@ -76,7 +77,7 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSave }) => {
                         className="flex items-center gap-2 text-xs text-[#7B61FF] hover:text-[#a292ff] transition-colors"
                     >
                         <ExternalLink size={12} />
-                        Criar chave no OpenRouter
+                        {t('apiKeyModal.createKey')}
                     </a>
                 </div>
 
@@ -87,7 +88,7 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSave }) => {
                             onClick={handleClear}
                             className="px-4 py-2.5 rounded-xl text-xs font-bold text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-colors"
                         >
-                            Remover
+                            {t('apiKeyModal.remove')}
                         </button>
                     )}
                     <button
@@ -95,7 +96,7 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSave }) => {
                         disabled={!inputKey.trim()}
                         className="flex-1 px-4 py-2.5 rounded-xl text-xs font-bold bg-[#7B61FF] text-white hover:bg-[#5841e6] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                     >
-                        {saved ? <><Check size={14} /> Salvo!</> : 'Salvar Chave'}
+                        {saved ? <><Check size={14} /> {t('apiKeyModal.saved')}</> : t('apiKeyModal.saveKey')}
                     </button>
                 </div>
             </div>

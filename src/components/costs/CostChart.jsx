@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { TOKENS_PER_CONVERSATION } from '../../data/models';
 import { calculateCost } from '../../utils/calculations';
@@ -12,6 +13,7 @@ const COLORS = [
 ];
 
 const CostChart = ({ currency, exchangeRate, models }) => {
+    const { t } = useTranslation();
     const data = models.map((m, i) => ({
         name: m.name,
         cost: calculateCost(m, TOKENS_PER_CONVERSATION, currency, exchangeRate),
@@ -25,7 +27,7 @@ const CostChart = ({ currency, exchangeRate, models }) => {
                     <p className="text-white text-sm font-bold">{payload[0].payload.name}</p>
                     <p className="text-[#7B61FF] text-xs font-mono mt-1">
                         {formatCurrency(payload[0].value, currency)}
-                        <span className="text-gray-500 ml-1">/ conversa</span>
+                        <span className="text-gray-500 ml-1">{t('costChart.perConv')}</span>
                     </p>
                 </div>
             );
@@ -36,10 +38,10 @@ const CostChart = ({ currency, exchangeRate, models }) => {
     return (
         <div className="bg-[#111113] border border-[#1f1f23] rounded-2xl sm:rounded-3xl p-5 sm:p-8 mt-6 sm:mt-8 animate-fadeIn" style={{ animationDelay: '400ms' }}>
             <h3 className="text-lg sm:text-xl font-bold text-white mb-1 tracking-tight">
-                Custo por Conversa — Visual
+                {t('costChart.title')}
             </h3>
             <p className="text-gray-500 text-xs sm:text-sm italic mb-6">
-                Comparação direta do custo por conversa de 70k tokens ({currency})
+                {t('costChart.subtitle')} ({currency})
             </p>
 
             <div className="h-[280px] sm:h-[350px]">
