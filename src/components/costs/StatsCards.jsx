@@ -41,7 +41,7 @@ const StatsCards = () => {
             iconColor: 'text-amber-500',
             label: 'Open-Source',
             value: openSource.name,
-            detail: 'Privacidade total via auto-hospedagem e performance de GPT-4o com custo reduzido',
+            detail: 'Privacidade total via auto-hospedagem, oferecendo o menor custo do mercado.',
             detailColor: 'text-amber-500/90 font-medium',
         },
         {

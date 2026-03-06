@@ -27,7 +27,7 @@ const App = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const { rate: exchangeRate } = useExchangeRate();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isRecoveringPassword, setIsRecoveringPassword } = useAuth();
   const {
     models,
     catalogModels,
@@ -53,7 +53,13 @@ const App = () => {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onSignOut={signOut}
       />
-
+      <AuthModal
+        isOpen={isAuthModalOpen || isRecoveringPassword}
+        onClose={() => {
+          setIsAuthModalOpen(false);
+          if (isRecoveringPassword) setIsRecoveringPassword(false);
+        }}
+      />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-6 sm:pb-10 relative z-10">
         {activeTab === 'table' && (
           <div key="table-tab">

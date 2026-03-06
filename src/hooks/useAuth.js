@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 export function useAuth() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isRecoveringPassword, setIsRecoveringPassword] = useState(false);
 
     useEffect(() => {
         // Obter a sessão atual ao carregar
@@ -15,6 +16,9 @@ export function useAuth() {
         // Escutar ativamente por mudanças (login, logout, token refresh)
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
+            if (_event === 'PASSWORD_RECOVERY') {
+                setIsRecoveringPassword(true);
+            }
         });
 
         return () => subscription.unsubscribe();
@@ -37,11 +41,28 @@ export function useAuth() {
         if (error) throw error;
     };
 
+    const resetPassword = async (email) => {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin,
+        });
+        if (error) throw error;
+    };
+
+    const updatePassword = async (newPassword) => {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) throw error;
+        setIsRecoveringPassword(false);
+    };
+
     return {
         user,
         loading,
         signIn,
         signUp,
-        signOut
+        signOut,
+        resetPassword,
+        updatePassword,
+        isRecoveringPassword,
+        setIsRecoveringPassword
     };
 }

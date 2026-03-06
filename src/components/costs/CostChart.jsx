@@ -14,7 +14,7 @@ const COLORS = [
 const CostChart = ({ currency, exchangeRate, models }) => {
     const data = models.map((m, i) => ({
         name: m.name,
-        cost: calculateCost(m.costInput, m.costOutput, TOKENS_PER_CONVERSATION, currency, exchangeRate),
+        cost: calculateCost(m, TOKENS_PER_CONVERSATION, currency, exchangeRate),
         color: COLORS[i] || '#7B61FF',
     }));
 

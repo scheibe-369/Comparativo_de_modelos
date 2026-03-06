@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { Menu, X, KeyRound, LogIn, User } from 'lucide-react';
+import { Menu, X, KeyRound, LogIn, User, Lock } from 'lucide-react';
 import GrowthHubLogo from '../ui/Logo';
 
 const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, hasApiKey, user, onOpenAuth, onSignOut }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const tabs = [
-        { id: 'table', label: 'Custos' },
-        { id: 'lab', label: 'AI Lab' },
-        { id: 'simulator', label: 'Simulador' },
+        { id: 'table', label: 'Custos', requiresAuth: false },
+        { id: 'lab', label: 'AI Lab', requiresAuth: true },
+        { id: 'simulator', label: 'Simulador', requiresAuth: true },
     ];
+
+    const handleTabClick = (tabId, requiresAuth) => {
+        if (requiresAuth && !user) {
+            onOpenAuth();
+            setMobileMenuOpen(false);
+            return;
+        }
+        setActiveTab(tabId);
+        setMobileMenuOpen(false);
+    };
 
     return (
         <nav className="sticky top-4 sm:top-6 z-50 w-full px-4 flex justify-center">
@@ -33,12 +43,13 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`relative py-2 text-[11px] font-black tracking-widest uppercase cursor-pointer transition-all ${activeTab === tab.id
+                            onClick={() => handleTabClick(tab.id, tab.requiresAuth)}
+                            className={`relative py-2 text-[11px] font-black tracking-widest uppercase cursor-pointer transition-all flex items-center gap-1.5 ${activeTab === tab.id
                                 ? 'text-white'
                                 : 'text-gray-500 hover:text-white'
                                 }`}
                         >
+                            {tab.requiresAuth && !user && <Lock size={10} className="mb-0.5 opacity-60" />}
                             {tab.label}
                             {activeTab === tab.id && (
                                 <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#7B61FF] rounded-full animate-fadeIn" />
@@ -148,13 +159,14 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
                         {tabs.map(tab => (
                             <button
                                 key={tab.id}
-                                onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}
-                                className={`w-full px-4 py-3 rounded-xl text-sm font-bold text-left transition-all ${activeTab === tab.id
+                                onClick={() => handleTabClick(tab.id, tab.requiresAuth)}
+                                className={`w-full px-4 py-3 rounded-xl text-sm font-bold text-left transition-all flex items-center justify-between ${activeTab === tab.id
                                     ? 'gh-btn-primary text-white'
                                     : 'text-gray-400 hover:bg-[#111] hover:text-white'
                                     }`}
                             >
-                                {tab.label}
+                                <span>{tab.label}</span>
+                                {tab.requiresAuth && !user && <Lock size={14} className="opacity-60" />}
                             </button>
                         ))}
 

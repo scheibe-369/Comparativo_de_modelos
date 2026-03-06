@@ -1,13 +1,38 @@
 /**
- * Calcular custo por quantidade de tokens divididos em Prompt (80%) e Completion (20%)
+ * Calcular custo por quantidade de tokens divididos em Prompt e Completion
  */
-export const calculateCost = (costInput, costOutput, tokenAmount, currency = 'USD', exchangeRate = 1) => {
+export const calculateCost = (model, tokenAmount, currency = 'USD', exchangeRate = 1, options = {}) => {
+    if (!model) return 0;
+
     // Estimativa padrão: 80% do tráfego é contexto (Input), 20% é resposta (Output)
     const inputTokens = tokenAmount * 0.8;
     const outputTokens = tokenAmount * 0.2;
 
-    const inputCostUSD = (costInput / 1_000_000) * inputTokens;
-    const outputCostUSD = (costOutput / 1_000_000) * outputTokens;
+    let baseInputCost = model.costInput;
+    let baseOutputCost = model.costOutput;
+
+    // 1. Tiers logic (e.g., Gemini 2.5 Flash over_200k)
+    if (model.tiers && inputTokens > 200000) {
+        if (model.tiers.over_200k) {
+            baseInputCost = model.tiers.over_200k.input;
+            baseOutputCost = model.tiers.over_200k.output;
+        }
+    }
+
+    // 2. Cache logic (if enabled via options)
+    if (options.useCache && model.costCachedInput) {
+        baseInputCost = model.costCachedInput;
+    } else if (options.useCache && model.cacheHit) {
+        baseInputCost = model.cacheHit;
+    }
+
+    // 3. Audio logic (if enabled via options)
+    if (options.useAudio && model.costAudioInput) {
+        baseInputCost = model.costAudioInput;
+    }
+
+    const inputCostUSD = (baseInputCost / 1_000_000) * inputTokens;
+    const outputCostUSD = (baseOutputCost / 1_000_000) * outputTokens;
 
     const totalUSD = inputCostUSD + outputCostUSD;
     return currency === 'BRL' ? totalUSD * exchangeRate : totalUSD;
@@ -15,15 +40,8 @@ export const calculateCost = (costInput, costOutput, tokenAmount, currency = 'US
 
 /**
  * Calcular custo mensal projetado
- * @param {number} costInput - Custo por 1M tokens de Input em USD
- * @param {number} costOutput - Custo por 1M tokens de Output em USD
- * @param {number} tokensPerConv - Tokens médios por conversa
- * @param {number} convsPerDay - Conversas por dia
- * @param {string} currency - 'USD' ou 'BRL'
- * @param {number} exchangeRate - Taxa de câmbio USD/BRL
  */
-export const calculateMonthlyCost = (costInput, costOutput, tokensPerConv, convsPerDay, currency = 'USD', exchangeRate = 1) => {
+export const calculateMonthlyCost = (model, tokensPerConv, convsPerDay, currency = 'USD', exchangeRate = 1, options = {}) => {
     const totalTokens = tokensPerConv * convsPerDay * 30;
-    const monthlyCost = calculateCost(costInput, costOutput, totalTokens, currency, exchangeRate);
-    return monthlyCost;
+    return calculateCost(model, totalTokens, currency, exchangeRate, options);
 };

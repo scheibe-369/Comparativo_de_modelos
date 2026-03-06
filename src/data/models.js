@@ -2,23 +2,24 @@
 export const modelsData = [
     { id: 'google/gemini-3-flash', name: 'Gemini 3 Flash', provider: 'Google', costInput: 0.50, costOutput: 3.00, category: 'Ultra-Fast', badge: 'recommended', isBaseline: true },
     { id: 'openai/gpt-5.2', name: 'GPT-5.2', provider: 'OpenAI', costInput: 2.50, costOutput: 10.00, category: 'Next-Gen', badge: 'new' },
-    { id: 'anthropic/claude-4.6-sonnet', name: 'Claude 4.6 Sonnet', provider: 'Anthropic', costInput: 3.00, costOutput: 15.00, category: 'High-Reasoning', badge: null },
+    { id: 'anthropic/claude-4.6-sonnet', name: 'Claude Sonnet 4.6', provider: 'Anthropic', costInput: 3.00, cacheWrite5m: 3.75, cacheWrite1h: 6.00, cacheHit: 0.30, costOutput: 15.00, category: 'High-Reasoning', badge: null },
     { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B', provider: 'Meta', costInput: 0.10, costOutput: 0.32, category: 'Open-Source', badge: null },
-    { id: 'openai/gpt-4.1-mini', name: 'GPT-4.1 Mini', provider: 'OpenAI', costInput: 0.15, costOutput: 0.60, category: 'Efficient', badge: null },
-    { id: 'anthropic/claude-4.6-opus', name: 'Claude 4.6 Opus', provider: 'Anthropic', costInput: 15.00, costOutput: 75.00, category: 'Powerful', badge: null },
+    { id: 'openai/gpt-4.1-mini', name: 'GPT-4.1 Mini', provider: 'OpenAI', costInput: 0.40, costCachedInput: 0.10, costOutput: 1.60, category: 'Efficient', badge: null },
+    { id: 'anthropic/claude-4.6-opus', name: 'Claude Opus 4.6', provider: 'Anthropic', costInput: 5.00, cacheWrite5m: 6.25, cacheWrite1h: 10.00, cacheHit: 0.50, costOutput: 25.00, category: 'Powerful', badge: null },
 ];
 
 // Modelos Adicionais (Catálogo)
 export const catalogModelsData = [
-    { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash', provider: 'Google', costInput: 0.10, costOutput: 0.40, category: 'Ultra-Fast', badge: null }, // Gemini 2.0 Flash
-    { id: 'moonshot/kimi-2.5', name: 'Kimi 2.5', provider: 'Moonshot', costInput: 0.60, costOutput: 3.00, category: 'Efficient', badge: null }, // Official Kimi K2.5 Price 
-    { id: 'anthropic/claude-4.6-haiku', name: 'Claude 4.6 Haiku', provider: 'Anthropic', costInput: 1.00, costOutput: 5.00, category: 'Efficient', badge: null }, // Claude 3.5 Haiku is $1.00 / $5.00
-    { id: 'openai/gpt-4o', name: 'GPT-4 Omni', provider: 'OpenAI', costInput: 2.50, costOutput: 10.00, category: 'High-Reasoning', badge: null }, // GPT-4o
-    { id: 'openai/gpt-5-mini', name: 'GPT-5 Mini', provider: 'OpenAI', costInput: 3.00, costOutput: 12.00, category: 'Efficient', badge: null }, // o1-mini pricing
-    { id: 'openai/gpt-5.1', name: 'GPT-5.1', provider: 'OpenAI', costInput: 15.00, costOutput: 60.00, category: 'High-Reasoning', badge: null }, // o1-preview pricing
-    { id: 'openai/gpt-5', name: 'GPT-5', provider: 'OpenAI', costInput: 150.00, costOutput: 600.00, category: 'High-Reasoning', badge: null }, // o1 Pro pricing
-    { id: 'google/gemini-3-pro', name: 'Gemini 3 Pro', provider: 'Google', costInput: 1.25, costOutput: 5.00, category: 'High-Reasoning', badge: null }, // Gemini 1.5 Pro (<128k)
-    { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro', provider: 'Google', costInput: 1.25, costOutput: 5.00, category: 'High-Reasoning', badge: null }, // Gemini 1.5 Pro (<128k)
+    { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash', provider: 'Google', costInput: 1.25, costOutput: 10.00, tiers: { over_200k: { input: 2.50, output: 15.00 } }, category: 'Ultra-Fast', badge: null },
+    { id: 'google/gemini-2.5-flash-audio', name: 'Gemini 2.5 Flash (Alt/Audio)', provider: 'Google', costInput: 0.30, costAudioInput: 1.00, costOutput: 2.50, category: 'Ultra-Fast', badge: null },
+    { id: 'moonshot/kimi-2.5', name: 'Kimi 2.5', provider: 'Moonshot', costInput: 0.60, costOutput: 3.00, category: 'Efficient', badge: null },
+    { id: 'anthropic/claude-4.6-haiku', name: 'Claude Haiku 4.5', provider: 'Anthropic', costInput: 1.00, cacheWrite5m: 1.25, cacheWrite1h: 2.00, cacheHit: 0.10, costOutput: 5.00, category: 'Efficient', badge: null },
+    { id: 'openai/gpt-4o-mini', name: 'GPT-4o-mini', provider: 'OpenAI', costInput: 0.15, costCachedInput: 0.075, costOutput: 0.60, category: 'Efficient', badge: null },
+    { id: 'openai/gpt-5-mini', name: 'GPT-5-mini', provider: 'OpenAI', costInput: 0.25, costCachedInput: 0.025, costOutput: 2.00, category: 'Efficient', badge: null },
+    { id: 'openai/gpt-5.1', name: 'GPT-5.1', provider: 'OpenAI', costInput: 1.25, costCachedInput: 0.125, costOutput: 10.00, category: 'High-Reasoning', badge: null },
+    { id: 'openai/gpt-5', name: 'GPT-5', provider: 'OpenAI', costInput: 1.25, costCachedInput: 0.125, costOutput: 10.00, category: 'High-Reasoning', badge: null },
+    { id: 'google/gemini-3.1-pro', name: 'Gemini 3.1 Pro', provider: 'Google', costInput: 2.00, costOutput: 12.00, tiers: { over_200k: { input: 4.00, output: 18.00 } }, category: 'High-Reasoning', badge: null },
+    { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro', provider: 'Google', costInput: 1.25, costOutput: 5.00, category: 'High-Reasoning', badge: null },
 ];
 
 export const getModelById = (id) => {

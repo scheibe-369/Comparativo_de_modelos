@@ -72,9 +72,9 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
         };
     }, [questions, activeTools]);
 
-    const calculateModelCost = (costInput, costOutput) => {
+    const calculateModelCost = (model) => {
         // Usa a nova lógica rateada em 80/20 do calculateCost com o total de tokens do breakDown
-        return calculateCost(costInput, costOutput, tokenBreakdown.total, currency, exchangeRate);
+        return calculateCost(model, tokenBreakdown.total, currency, exchangeRate);
     };
 
     return (
@@ -232,9 +232,9 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                         </div>
                         <div className="space-y-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
                             {models.map((model) => {
-                                const cost = calculateModelCost(model.costInput, model.costOutput);
+                                const cost = calculateModelCost(model);
                                 const maxCostModel = models[models.length - 1]; // assumindo os ordenados
-                                const maxCost = maxCostModel ? calculateModelCost(maxCostModel.costInput, maxCostModel.costOutput) : 1;
+                                const maxCost = maxCostModel ? calculateModelCost(maxCostModel) : 1;
                                 const barWidth = maxCost > 0 ? (cost / maxCost) * 100 : 0;
 
                                 return (
@@ -274,7 +274,7 @@ const AttendanceSimulator = ({ currency, exchangeRate, models, onOpenCatalog }) 
                         <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">Projeção Mensal (100 conv/dia)</p>
                         <div className="grid grid-cols-2 gap-3 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
                             {models.map((model) => {
-                                const costPerConv = calculateModelCost(model.costInput, model.costOutput);
+                                const costPerConv = calculateModelCost(model);
                                 const monthly = costPerConv * 100 * 30;
                                 return (
                                     <div key={model.id} className="text-center">

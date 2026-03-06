@@ -82,13 +82,13 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                                 </td>
                                 <td className="p-4 sm:p-6 text-right font-mono text-xs sm:text-sm font-bold text-white">
                                     {formatCurrency(
-                                        calculateCost(model.costInput, model.costOutput, TOKENS_PER_CONVERSATION, currency, exchangeRate),
+                                        calculateCost(model, TOKENS_PER_CONVERSATION, currency, exchangeRate),
                                         currency
                                     )}
                                 </td>
                                 <td className="p-4 sm:p-6 text-right font-mono text-xs sm:text-sm text-gray-400">
                                     {formatCurrency(
-                                        calculateCost(model.costInput, model.costOutput, TOKENS_PER_CONVERSATION * 1000, currency, exchangeRate),
+                                        calculateCost(model, TOKENS_PER_CONVERSATION * 1000, currency, exchangeRate),
                                         currency,
                                         true
                                     )}

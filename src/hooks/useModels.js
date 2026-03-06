@@ -4,14 +4,8 @@ import { useAuth } from './useAuth';
 
 export function useModels() {
     const { user } = useAuth();
-    const [catalogModels, setCatalogModels] = useState([]);
     const [userSelectedModelIds, setUserSelectedModelIds] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        // Agora usamos os dados locais diretamente
-        setCatalogModels(catalogModelsData);
-    }, []);
 
     useEffect(() => {
         // Simulando banco com localStorage se usuário logado, vazio caso não logado
@@ -60,7 +54,7 @@ export function useModels() {
 
     return {
         models: combinedModels, // A lista final que o App usa
-        catalogModels, // Catálogo total para a UI da "Loja"
+        catalogModels: catalogModelsData, // Catálogo total para a UI da "Loja"
         userSelectedModelIds, // Pra saber na UI quais ele já tem
         loading,
         addModelToUser,
