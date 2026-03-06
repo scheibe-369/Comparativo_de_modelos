@@ -45,7 +45,7 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                             <th className="p-4 sm:p-6 font-bold">Provedor</th>
                             <th className="p-4 sm:p-6 font-bold text-right">In / Out (1M)</th>
                             <th className="p-4 sm:p-6 font-bold text-right text-[#7B61FF]">Custo/Conv (70k)</th>
-                            <th className="p-4 sm:p-6 font-bold text-right">Impacto (10k Conv)</th>
+                            <th className="p-4 sm:p-6 font-bold text-right">Impacto (1000 Conv)</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-[#1a1a1c]">
@@ -88,7 +88,7 @@ const CostTable = ({ currency, exchangeRate, models, onOpenCatalog }) => {
                                 </td>
                                 <td className="p-4 sm:p-6 text-right font-mono text-xs sm:text-sm text-gray-400">
                                     {formatCurrency(
-                                        calculateCost(model.costInput, model.costOutput, TOKENS_PER_CONVERSATION * 10000, currency, exchangeRate),
+                                        calculateCost(model.costInput, model.costOutput, TOKENS_PER_CONVERSATION * 1000, currency, exchangeRate),
                                         currency,
                                         true
                                     )}
