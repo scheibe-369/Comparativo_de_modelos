@@ -117,7 +117,9 @@ const resources = {
                 "createAccountNow": "Create Account Now",
                 "backToLogin": "Back to Login",
                 "dontHaveAccount": "Don't have an account? Create one",
-                "alreadyHaveAccount": "Already have an account? Log in"
+                "alreadyHaveAccount": "Already have an account? Log in",
+                "or": "Or",
+                "continueWithGoogle": "Continue with Google"
             },
             "modelCatalog": {
                 "title": "Model Catalog",
@@ -250,7 +252,9 @@ const resources = {
                 "createAccountNow": "Criar Conta Agora",
                 "backToLogin": "Voltar para o Login",
                 "dontHaveAccount": "Não tem uma conta? Crie uma",
-                "alreadyHaveAccount": "Já tem uma conta? Entre"
+                "alreadyHaveAccount": "Já tem uma conta? Entre",
+                "or": "Ou",
+                "continueWithGoogle": "Continuar com Google"
             },
             "modelCatalog": {
                 "title": "Catálogo de Modelos",
