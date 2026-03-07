@@ -132,6 +132,8 @@ const App = () => {
             onOpenApiKey={() => setShowApiKeyModal(true)}
             currency={currency}
             exchangeRate={exchangeRate}
+            models={models}
+            onOpenCatalog={() => user ? setIsCatalogOpen(true) : setIsAuthModalOpen(true)}
           />
         )}
         {activeTab === 'simulator' && (

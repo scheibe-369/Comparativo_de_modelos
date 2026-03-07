@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Loader2, RefreshCcw, Download, KeyRound } from 'lucide-react';
+import { Send, Loader2, RefreshCcw, Download, KeyRound, ChevronDown, Plus } from 'lucide-react';
 import { getSortedModels, getModelById } from '../../data/models';
 import { formatCurrency } from '../../utils/formatters';
 import { calculateCost } from '../../utils/calculations';
@@ -8,7 +8,7 @@ import GrowthHubLogo from '../ui/Logo';
 import { useTranslation } from 'react-i18next';
 import ChatMessage from './ChatMessage';
 
-const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
+const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate, models, onOpenCatalog }) => {
     const { t } = useTranslation();
     const [prompt, setPrompt] = useState('');
     const [messages, setMessages] = useState(() => {
@@ -21,9 +21,22 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
     const [selectedModel, setSelectedModel] = useState('google/gemini-2.5-flash');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
     const chatEndRef = useRef(null);
     const inputRef = useRef(null);
-    const sortedModels = getSortedModels();
+    const sortedModels = models || getSortedModels();
+
+    // Close dropdown on click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     // Persist chat history 
     useEffect(() => {
@@ -98,25 +111,62 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
             <div className="p-4 sm:p-6 border-b border-[#1f1f23] flex items-center justify-between bg-[#0d0d0f]">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                     <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${apiKey ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
-                    <h2 className="font-bold text-white tracking-tight flex items-center gap-2 text-sm sm:text-base truncate">
-                        <span className="hidden sm:inline">{t('chatWindow.growthLab')}</span>
-                        <select
-                            value={selectedModel}
-                            onChange={(e) => setSelectedModel(e.target.value)}
-                            className="bg-[#161619] border border-[#222] text-[#7B61FF] text-xs sm:text-sm rounded-lg px-2 py-1 focus:outline-none focus:border-[#7B61FF] max-w-[180px]"
-                        >
-                            {sortedModels.map(m => (
-                                <option key={m.id} value={m.id}>{m.name}</option>
-                            ))}
-                        </select>
+                    <h2 className="font-bold text-white tracking-tight flex items-center gap-3 text-sm sm:text-base">
+                        <span className="hidden sm:inline opacity-60 uppercase text-[10px] tracking-widest">{t('chatWindow.growthLab')}</span>
+
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                type="button"
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                className="flex items-center gap-2 bg-[#161619]/80 border border-[#222] hover:border-[#7B61FF]/50 text-[#7B61FF] text-[11px] sm:text-xs font-black uppercase tracking-widest rounded-full px-4 py-2 transition-all outline-none shadow-inner cursor-pointer"
+                            >
+                                <span className="truncate max-w-[120px] sm:max-w-[180px]">
+                                    {currentModel?.name}
+                                </span>
+                                <ChevronDown size={12} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            {isDropdownOpen && (
+                                <div className="absolute top-full left-0 mt-3 w-56 sm:w-64 bg-[#0d0d0f]/95 backdrop-blur-xl border border-[#1f1f23] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] z-50 overflow-hidden animate-slideUp py-2">
+                                    <div className="max-h-[300px] overflow-y-auto gh-scrollbar">
+                                        {sortedModels.map(m => (
+                                            <button
+                                                key={m.id}
+                                                type="button"
+                                                onClick={() => {
+                                                    setSelectedModel(m.id);
+                                                    setIsDropdownOpen(false);
+                                                }}
+                                                className={`w-full text-left px-4 py-3 transition-all hover:bg-[#7B61FF]/10 flex items-center justify-between group cursor-pointer ${selectedModel === m.id ? 'bg-[#7B61FF]/5 text-white' : 'text-gray-400'}`}
+                                            >
+                                                <div className="flex flex-col">
+                                                    <span className={`text-[11px] sm:text-xs font-bold ${selectedModel === m.id ? 'text-[#7B61FF]' : 'group-hover:text-[#9B8AFF]'}`}>{m.name}</span>
+                                                    <span className="text-[9px] opacity-40 uppercase tracking-tighter">{m.provider}</span>
+                                                </div>
+                                                {selectedModel === m.id && (
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-[#7B61FF] shadow-[0_0_10px_rgba(123,97,255,0.8)] animate-pulse" />
+                                                )}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </h2>
                 </div>
 
                 <div className="flex items-center gap-1 sm:gap-2">
+                    <button
+                        onClick={onOpenCatalog}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#7B61FF]/10 border border-[#7B61FF]/30 text-[#7B61FF] text-[10px] sm:text-xs font-bold hover:bg-[#7B61FF]/20 transition-all mr-1 group/btn cursor-pointer"
+                    >
+                        <Plus size={12} className="group-hover/btn:rotate-90 transition-transform" />
+                        <span>{t('chatWindow.addModels')}</span>
+                    </button>
                     {!apiKey && (
                         <button
                             onClick={onOpenApiKey}
-                            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] sm:text-xs font-bold hover:bg-red-500/20 transition-colors"
+                            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] sm:text-xs font-bold hover:bg-red-500/20 transition-colors cursor-pointer"
                         >
                             <KeyRound size={12} />
                             <span className="hidden sm:inline">{t('chatWindow.configKey')}</span>
@@ -125,14 +175,14 @@ const ChatWindow = ({ apiKey, onOpenApiKey, currency, exchangeRate }) => {
                     <button
                         onClick={handleExport}
                         disabled={messages.length === 0}
-                        className="text-gray-500 hover:text-white transition-colors disabled:opacity-30 p-1.5"
+                        className="text-gray-500 hover:text-white transition-colors disabled:opacity-30 p-1.5 cursor-pointer disabled:cursor-not-allowed"
                         title={t('chatWindow.exportChat')}
                     >
                         <Download size={16} />
                     </button>
                     <button
                         onClick={handleClear}
-                        className="text-gray-500 hover:text-white transition-colors p-1.5"
+                        className="text-gray-500 hover:text-white transition-colors p-1.5 cursor-pointer"
                         title={t('chatWindow.clearChat')}
                     >
                         <RefreshCcw size={16} />

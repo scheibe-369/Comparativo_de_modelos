@@ -67,7 +67,7 @@ const ModelCatalogModal = ({
                                 </div>
                                 <button
                                     onClick={onClose}
-                                    className="text-gray-500 hover:text-white transition-colors bg-[#1a1a1c] p-2 rounded-full hover:bg-[#222]"
+                                    className="text-gray-500 hover:text-white transition-colors bg-[#1a1a1c] p-2 rounded-full hover:bg-[#222] cursor-pointer"
                                 >
                                     <X size={20} />
                                 </button>
