@@ -42,6 +42,9 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#070708] text-gray-200 font-sans selection:bg-[#7B61FF]/30 relative">
+
+      {/* Blurred Sidebar Effect Zone */}
+      <div className="gh-sidebar-blur" />
       <ShaderBackground />
       <BackgroundEffects />
 

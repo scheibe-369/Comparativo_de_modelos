@@ -693,3 +693,19 @@ input[type="range"]::-moz-range-thumb {
 body {
   scrollbar-gutter: stable;
 }
+
+/* Sidebar Blur Effect Zone */
+.gh-sidebar-blur {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 45;
+  pointer-events: none;
+  background: linear-gradient(to left,
+      rgba(10, 10, 15, 0.1) 0%,
+      transparent 100%);
+}
