@@ -19,11 +19,17 @@ import BackgroundEffects from './components/ui/BackgroundEffects';
 import ShaderBackground from './components/ui/ShaderBackground';
 import ChatWindow from './components/chat/ChatWindow';
 import AttendanceSimulator from './components/simulator/AttendanceSimulator';
+import LandingPage from './components/layout/LandingPage';
+
+const getTabFromUrl = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('tab') || 'home';
+};
 
 
 const App = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('table');
+  const [activeTab, setActiveTab] = useState(getTabFromUrl());
   const [currency, setCurrency] = useState('BRL');
   const [apiKey, setApiKey] = useLocalStorage('gh_api_key', '');
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
@@ -40,6 +46,30 @@ const App = () => {
     loading: modelsLoading
   } = useModels();
 
+  // Handle browser back/forward buttons
+  React.useEffect(() => {
+    const handlePopState = () => {
+      setActiveTab(getTabFromUrl());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Custom navigation wrapper to sync with history
+  const handleTabChange = (tab) => {
+    if (tab === activeTab) return;
+    
+    const url = new URL(window.location);
+    if (tab === 'home') {
+      url.searchParams.delete('tab');
+    } else {
+      url.searchParams.set('tab', tab);
+    }
+    
+    window.history.pushState({ tab }, '', url);
+    setActiveTab(tab);
+  };
+
   return (
     <div className="min-h-screen bg-[#070708] text-gray-200 font-sans selection:bg-[#7B61FF]/30 relative">
 
@@ -48,17 +78,19 @@ const App = () => {
       <ShaderBackground />
       <BackgroundEffects />
 
-      <Header
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        currency={currency}
-        setCurrency={setCurrency}
-        onOpenApiKey={() => setShowApiKeyModal(true)}
-        hasApiKey={!!apiKey}
-        user={user}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
-        onSignOut={signOut}
-      />
+      {activeTab !== 'home' && (
+        <Header
+          activeTab={activeTab}
+          setActiveTab={handleTabChange}
+          currency={currency}
+          setCurrency={setCurrency}
+          onOpenApiKey={() => setShowApiKeyModal(true)}
+          hasApiKey={!!apiKey}
+          user={user}
+          onOpenAuth={() => setIsAuthModalOpen(true)}
+          onSignOut={signOut}
+        />
+      )}
       <AuthModal
         isOpen={isAuthModalOpen || isRecoveringPassword}
         onClose={() => {
@@ -128,6 +160,9 @@ const App = () => {
               </div>
             </div>
           </div>
+        )}
+        {activeTab === 'home' && (
+          <LandingPage onEnterApp={() => handleTabChange('table')} />
         )}
         {activeTab === 'lab' && (
           <ChatWindow
