@@ -29,7 +29,7 @@ const Header = ({ activeTab, setActiveTab, currency, setCurrency, onOpenApiKey, 
 
     return (
         <nav className="sticky top-4 sm:top-6 z-50 w-full px-4 flex justify-center">
-            <div className="max-w-7xl w-full h-16 sm:h-20 gh-card-hover rounded-full flex items-center justify-between px-6 sm:px-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] !transform-none backdrop-blur-[20px]">
+            <div className="max-w-7xl w-full h-16 sm:h-20 gh-card-hover rounded-full flex items-center justify-between px-6 sm:px-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] !transform-none">
 
                 {/* Logo and Branding - Left */}
                 <div className="flex items-center gap-3 group cursor-pointer shrink-0" onClick={() => setActiveTab('table')}>
