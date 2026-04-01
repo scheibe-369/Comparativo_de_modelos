@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useLocalStorage } from './hooks/useLocalStorage';
+import { useUserSettings } from './hooks/useUserSettings';
 import { useExchangeRate } from './hooks/useExchangeRate';
 import { useAuth } from './hooks/useAuth';
 import { useModels } from './hooks/useModels';
@@ -20,18 +20,19 @@ import ShaderBackground from './components/ui/ShaderBackground';
 import ChatWindow from './components/chat/ChatWindow';
 import AttendanceSimulator from './components/simulator/AttendanceSimulator';
 import LandingPage from './components/layout/LandingPage';
+import { useSupabaseKeepAlive } from './hooks/useSupabaseKeepAlive';
 
 const getTabFromUrl = () => {
   const params = new URLSearchParams(window.location.search);
   return params.get('tab') || 'home';
 };
 
-
 const App = () => {
+  useSupabaseKeepAlive(); // Ativação interna do Supabase
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(getTabFromUrl());
   const [currency, setCurrency] = useState('BRL');
-  const [apiKey, setApiKey] = useLocalStorage('gh_api_key', '');
+  const { apiKey, setApiKey } = useUserSettings();
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
