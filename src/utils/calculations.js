@@ -4,9 +4,13 @@
 export const calculateCost = (model, tokenAmount, currency = 'USD', exchangeRate = 1, options = {}) => {
     if (!model) return 0;
 
+    // Se estiver no modo Exato, usa os valores literais declarados via opções
+    const isExactMode = options.exactInput !== undefined && options.exactOutput !== undefined;
+    
     // Estimativa padrão: 80% do tráfego é contexto (Input), 20% é resposta (Output)
-    const inputTokens = tokenAmount * 0.8;
-    const outputTokens = tokenAmount * 0.2;
+    // Se "exactMode" estiver ativo, sobrescreve o blending genérico.
+    const inputTokens = isExactMode ? options.exactInput : tokenAmount * 0.8;
+    const outputTokens = isExactMode ? options.exactOutput : tokenAmount * 0.2;
 
     let baseInputCost = model.costInput;
     let baseOutputCost = model.costOutput;
@@ -34,7 +38,13 @@ export const calculateCost = (model, tokenAmount, currency = 'USD', exchangeRate
     const inputCostUSD = (baseInputCost / 1_000_000) * inputTokens;
     const outputCostUSD = (baseOutputCost / 1_000_000) * outputTokens;
 
-    const totalUSD = inputCostUSD + outputCostUSD;
+    let totalUSD = inputCostUSD + outputCostUSD;
+
+    // 4. Apply Internal Client Markup (1.5x) if requested
+    if (options.clientMarkup) {
+        totalUSD *= 1.5;
+    }
+
     return currency === 'BRL' ? totalUSD * exchangeRate : totalUSD;
 };
 

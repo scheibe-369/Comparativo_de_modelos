@@ -94,7 +94,15 @@ const resources = {
                 "inventory": "Inventory Check",
                 "inventoryDesc": "Check product availability",
                 "tool": "tool",
-                "toolsPlural": "tools"
+                "toolsPlural": "tools",
+                "uploadConversation": "Upload Conversation (.txt, .md, .docx)",
+                "agentResponses": "Agent Responses",
+                "toolsUsed": "Tools Activated",
+                "uploadSuccess": "File loaded successfully!",
+                "uploadError": "Error reading file",
+                "realSimulation": "Real Text Example",
+                "theoreticalSimulation": "Theoretical Average",
+                "dragAndDrop": "Click or drag your file here"
             },
             "authModal": {
                 "passwordUpdated": "Password updated successfully!",
@@ -230,7 +238,15 @@ const resources = {
                 "inventory": "Verificação de Estoque",
                 "inventoryDesc": "Checar disponibilidade de produtos",
                 "tool": "tool",
-                "toolsPlural": "tools"
+                "toolsPlural": "tools",
+                "uploadConversation": "Upload de Conversa (.txt, .md, .docx)",
+                "agentResponses": "Respostas do Agente",
+                "toolsUsed": "Ferramentas Ativadas",
+                "uploadSuccess": "Arquivo carregado com sucesso!",
+                "uploadError": "Erro ao ler arquivo",
+                "realSimulation": "Exemplo em Texto",
+                "theoreticalSimulation": "Média Teórica",
+                "dragAndDrop": "Clique ou arraste seu arquivo aqui"
             },
             "authModal": {
                 "passwordUpdated": "Senha atualizada com sucesso!",
